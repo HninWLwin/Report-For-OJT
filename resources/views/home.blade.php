@@ -26,7 +26,7 @@
                                                 <div class="col-sm-4">
                                                     <input id="keyword" type="text" class="form-control " name="keyword" >
                                                 </div>
-                                                <input type="submit" class="btn btn-success "value="Search" action="{{ route('posts.index') }}">	&nbsp;	&nbsp;	&nbsp;
+                                                <button type="submit" class="btn btn-success " >{{ __('Search') }}</button>	&nbsp;	&nbsp;	&nbsp;
                                                 <button type="submit" class="btn btn-success " ><a href="{{ route('posts.create') }}">{{ __('Create') }}</a></button>&nbsp; 	&nbsp; 	&nbsp;
                                                 <button type="submit" class="btn btn-success ">{{ __('Upload') }}</button>	&nbsp;	&nbsp;	&nbsp;
                                                 <button type="submit" class="btn btn-success ">{{ __('Download') }}</button>

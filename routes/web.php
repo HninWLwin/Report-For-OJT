@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('postlist');
 });
 Route::get('/register', function () {
     return view('auth.register');
@@ -26,7 +26,7 @@ Route::get('/register', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/postList', [App\Http\Controllers\PostListController::class, 'index'])->name('postList');
 
 Route::resource('posts', PostController::class);
 

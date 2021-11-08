@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 
-class HomeController extends Controller
+class PostListController extends Controller
 {
     /**
      * Create a new controller instance.
