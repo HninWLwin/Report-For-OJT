@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('create') }}">
+                    <form method="POST" action="{{ route('create') }}" id="createuser-form">
                         @csrf
 
                         <div class="form-group row">
@@ -68,6 +68,31 @@
                                 <input id="type" type="type" class="form-control" name="type" required autocomplete="type">
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone*') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="phone" type="phone" class="form-control" name="phone" required autocomplete="phone">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="dob" class="col-md-4 col-form-label text-md-right">{{ __('Date of birth*') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="dob" type="date" class="form-control" name="dob" required autocomplete="dob">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address*') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="address" type="address" class="form-control" name="address" required autocomplete="address">
+                            </div>
+                        </div>
+
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

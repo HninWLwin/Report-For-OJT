@@ -17,7 +17,9 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('title'); // varchar(255)
             $table->string('description');
-            $table->integer('status');
+            $table->integer('status')->default('1');
+            $table->foreignId('create_user_id')->references('id')->on('users');
+            $table->foreignId('updated_user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

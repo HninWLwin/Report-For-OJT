@@ -19,17 +19,17 @@ Route::get('/', function () {
 Route::get('/register', function () {
     return view('auth.register');
 });
-Route::get('/login', function () {
-    return view('auth.login-user');
-});
+
 //Route::post('/registerUser', 'Auth\RegisterController@create');
 //Route::post('/loginUser', 'Auth\LoginController@login');
-
-Route::get('/create', 'PostsController@create');
- 
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::resource('posts','PostController');
+
+Route::post('create','PostController@create')->name('create_post');
+Route::post('create','UserController@create')->name('create_user');
 
 //Route::resource('posts', 'PostsController', ['only' => ['create', 'store', 'show', 'edit', 'update', 'destroy']]);
