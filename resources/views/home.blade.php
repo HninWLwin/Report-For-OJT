@@ -26,8 +26,8 @@
                                                 <div class="col-sm-4">
                                                     <input id="keyword" type="text" class="form-control " name="keyword" >
                                                 </div>
-                                                <button type="submit" class="btn btn-success ">{{ __('Search') }}</button>	&nbsp;	&nbsp;	&nbsp;
-                                                <button type="submit" class="btn btn-success " href="{{ route('create') }}">{{ __('Create') }}</button>&nbsp; 	&nbsp; 	&nbsp;
+                                                <input type="submit" class="btn btn-success "value="Search" action="{{ route('posts.index') }}">	&nbsp;	&nbsp;	&nbsp;
+                                                <button type="submit" class="btn btn-success " ><a href="{{ route('posts.create') }}">{{ __('Create') }}</a></button>&nbsp; 	&nbsp; 	&nbsp;
                                                 <button type="submit" class="btn btn-success ">{{ __('Upload') }}</button>	&nbsp;	&nbsp;	&nbsp;
                                                 <button type="submit" class="btn btn-success ">{{ __('Download') }}</button>
                                             </div> 
@@ -53,16 +53,18 @@
                                     </thead>
                                  
                                     <tbody>
+                                        @foreach ($posts as $post)
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td>(171) 555-2222</td>
-                                            <td></td>
+                                            <td>{{ $post->title }}</td>
+                                            <td>{{ $post->description }}</td>
+                                            <td> {{ Auth::user()->name }}</td>
+                                            <td>{{ $post->created_at }}</td>
                                             <td>
                                                 <button type="button" a class="btn btn-primary" title="Edit" data-toggle="tooltip">Edit</a></button>
                                                 <button type="button" a class="btn btn-danger" title="Edit" data-toggle="tooltip">Delete</a></button>
                                             </td>
                                         </tr>
+                                        @endforeach
                                     </tbody>
                                  
                                 </table>

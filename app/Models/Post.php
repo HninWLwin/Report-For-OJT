@@ -9,6 +9,9 @@ class Post extends Model
 {
     use HasFactory;
 
+    protected $table = 'posts';
+    public $timestamps = true;
+
     protected $fillable = [
         'title', 
         'description', 

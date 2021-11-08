@@ -14,10 +14,28 @@ class PostController extends Controller
      */
     public function index()
     {
-        $products = Post::latest()->paginate(5);
+        //  $data = Post::latest()->paginate(5);
   
-        return view('home',compact('posts'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        //  return view('home',compact('data'))
+        //      ->with('i', (request()->input('page', 1) - 1) * 5);
+
+        //$posts = Post::all();
+        return view('home', compact('posts'));
+
+        $search =  $request->input('keyword');
+        if($search!=""){
+            $Members = Member::where(function ($query) use ($search){
+                $query->where('title', 'like', '%'.$search.'%')
+                    ->orWhere('description', 'like', '%'.$search.'%');
+            })
+            ->paginate(2);
+            $Members->appends(['keyword' => $search]);
+        }
+        else{
+            $Members = Member::paginate(2);
+        }
+        return View('home')->with('data',$Members);
+        //
     }
 
     /**
@@ -37,17 +55,30 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $request->validate([
+    {     
+        $request->validate([    
             'title' => 'required',
             'description' => 'required',
             'status' => 'required',
         ]);
+
+         Post::create($request->all());
+
+        //$posts = Post::create($request->all());
+       
+        return redirect('home')->with('success', 'Post created successfully.!');
   
-        Post::create($request->all());
+        // auth()->user()->posts()->create([    
+        //     'title' => $data['title'],   
+        //     'description' => $data['description'],
+        //     'status' => $data['status']  
+        // ]); 
+
+        // return redirect()->route('home', ['user' => auth()->user() ]
+        //                 ->with('success', 'Post created successfully.'));
    
-        return redirect()->route('home')
-                        ->with('success','Post created successfully.');
+        // return redirect()->route('home')
+        //                 ->with('success','Post created successfully.');
     }
 
     /**
@@ -94,4 +125,9 @@ class PostController extends Controller
     {
         //
     }
+
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 }

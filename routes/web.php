@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,9 +28,13 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('posts','PostController');
+Route::resource('posts', PostController::class);
 
-Route::post('create','PostController@create')->name('create_post');
-Route::post('create','UserController@create')->name('create_user');
+Route::get('/create_user','UserController@create')->name('create_user');
+
+//Route::get('/create', [App\Http\Controllers\PostController::class, 'create'])->name('create');
+
+//Route::post('posts/create', 'PostController@store');
+//Route::post('posts', 'PostController@index');
 
 //Route::resource('posts', 'PostsController', ['only' => ['create', 'store', 'show', 'edit', 'update', 'destroy']]);
