@@ -4,9 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Contracts\Services\Post\PostServiceInterface;
+use Illuminate\Support\Facades\Input;
+use DB;
 
 class PostController extends Controller
 {
+
+    private $postInterface;
+
+     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(PostServiceInterface $postInterface)
+    {
+        $this->middleware('auth');
+        $this->postInterface = $postInterface;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,28 +31,26 @@ class PostController extends Controller
      */
     public function index()
     {
-        //  $data = Post::latest()->paginate(5);
-  
-        //  return view('home',compact('data'))
-        //      ->with('i', (request()->input('page', 1) - 1) * 5);
+        //$posts = $this->postInterface->getPostList();
 
-        //$posts = Post::all();
-        return view('home', compact('posts'));
+        $postLists = DB::table('posts')->orderBy('created_at', 'DESC')->paginate(3);   // need to edit in dao
+
+        return view('postList', ['posts' => $postLists]);
+    }
+
+    public function find(Request $request)
+    {
+        //$posts = $this->postInterface->getPostList();
 
         $search =  $request->input('keyword');
-        if($search!=""){
-            $Members = Member::where(function ($query) use ($search){
-                $query->where('title', 'like', '%'.$search.'%')
-                    ->orWhere('description', 'like', '%'.$search.'%');
-            })
-            ->paginate(2);
-            $Members->appends(['keyword' => $search]);
-        }
-        else{
-            $Members = Member::paginate(2);
-        }
-        return View('home')->with('data',$Members);
-        //
+
+            $searchData = Post::where('title', 'like', '%'.$search.'%')
+                    ->orWhere('description', 'like', '%'.$search.'%')->get();
+                    if (count ( $searchData ) > 0)
+                        return view ( 'postList' )->withDetails ( $searchData )->withQuery ( $search );
+                    else
+                        return view ( 'postList' )->withMessage ( 'No Details found. Try to search again !' );		
+        
     }
 
     /**
@@ -59,14 +74,12 @@ class PostController extends Controller
         $request->validate([    
             'title' => 'required',
             'description' => 'required',
-            'status' => 'required',
         ]);
 
          Post::create($request->all());
+         $data['create_user_id']=$user->id;
 
-        //$posts = Post::create($request->all());
-       
-        return redirect('home')->with('success', 'Post created successfully.!');
+        return redirect('postList')->with('success', 'Post created successfully.!');
   
         // auth()->user()->posts()->create([    
         //     'title' => $data['title'],   
@@ -89,7 +102,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('home',compact('post'));
+        return view('postList',compact('post'));
     }
 
     /**
@@ -121,9 +134,12 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        Post::find($id)->delete();
+
+        return redirect()->route('postList')
+            ->with('success','Post deleted successfully');
     }
 
     // public function __construct()

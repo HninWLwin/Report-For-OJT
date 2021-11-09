@@ -15,26 +15,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('postlist');
+    return view('welcome');
 });
 Route::get('/register', function () {
     return view('auth.register');
 });
 
-//Route::post('/registerUser', 'Auth\RegisterController@create');
-//Route::post('/loginUser', 'Auth\LoginController@login');
-
 Auth::routes();
 
-Route::get('/postList', [App\Http\Controllers\PostListController::class, 'index'])->name('postList');
+Route::get('/postList', [App\Http\Controllers\PostController::class, 'index'])->name('postList');
 
 Route::resource('posts', PostController::class);
 
 Route::get('/create_user','UserController@create')->name('create_user');
 
-//Route::get('/create', [App\Http\Controllers\PostController::class, 'create'])->name('create');
+Route::get('posts/{id}', [PostController::class, 'destory'])->name('destory');
 
-//Route::post('posts/create', 'PostController@store');
-//Route::post('posts', 'PostController@index');
+Route::get('/find', 'PostController@find')->name('find');
+
+Route::post('/postRegistration', 'PostController@store')->name('create_post');
 
 //Route::resource('posts', 'PostsController', ['only' => ['create', 'store', 'show', 'edit', 'update', 'destroy']]);

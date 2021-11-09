@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 
-class PostListController extends Controller
+class HomeController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -25,6 +25,6 @@ class PostListController extends Controller
     public function index()
     {
         $post = DB::table('posts')->orderBy('created_at', 'DESC')->paginate(10);
-        return view('home', ['posts' => $post]);
+        return view('postList', ['posts' => $post]);
     }
 }

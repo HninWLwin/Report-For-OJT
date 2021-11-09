@@ -3,79 +3,109 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header">{{ __('Post List') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
                         </div>
+                    @endif
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                    @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgotten Password?') }}
-                                    </a>
-                                @endif
+                    <div class="container-lg">
+                        <div class="table-responsive">
+                            <div class="table-wrapper">
+                                <div class="table-title">
+                                    <div class="row">
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-10">
+                                            <div class="form-group row">
+                                                <label for="keyword" class="col-sm-2    col-form-label text-md-right">{{ __('keyword:') }}</label>    
+                                                <div class="col-sm-4">
+                                                    <input id="keyword" type="text" class="form-control " name="keyword" >
+                                                </div>
+                                                <button type="submit" class="btn btn-success "><a href="{{ route('find') }}">{{ __('Search') }}</a></button>	&nbsp;	&nbsp;	&nbsp;
+                                                <button type="submit" class="btn btn-success " ><a href="{{ route('posts.create') }}">{{ __('Create') }}</a></button>&nbsp; 	&nbsp; 	&nbsp;
+                                                <button type="submit" class="btn btn-success ">{{ __('Upload') }}</button>	&nbsp;	&nbsp;	&nbsp;
+                                                <button type="submit" class="btn btn-success ">{{ __('Download') }}</button>
+                                            </div> 
+                                         </div>         
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-success btn-lg btn-block">
-                                    {{ __('Login') }}
-                                </button>
-                            </div>
-                        </div>
-                         <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                    @if (Route::has('register'))
-                                    <a class="btn btn-link" href="{{ route('register') }}">
-                                        {{ __('Create Account?') }}
-                                    </a>
+                                @if ($message = Session::get('success'))
+                                    <div class="alert alert-success">
+                                        <p>{{ $message  }}</p>
+                                    </div>
                                 @endif
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Post Title</th>
+                                            <th>Post Description</th>
+                                            <th>Posted User</th>
+                                            <th>Posted Date</th>
+                                            <th>Operation</th>
+                                        </tr>
+                                    </thead>
+                                 
+                                    <tbody>
+                                        @if (!empty($posts) && $posts->count())
+                                            @foreach ($posts as $post)
+                                            <tr>
+                                                <td>{{ $post->title }}</td>
+                                                <td>{{ $post->description }}</td>
+                                                <td> {{ Auth::user()->name }}</td>
+                                                <td>{{ $post->created_at }}</td>
+                                                <td>
+                                                    <button type="button" a class="btn btn-primary"  data-toggle="tooltip">Edit</a></button>
+                                                    <form method="POST" action="{{ route('destory', $post->id) }}">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                    
+                                                        <button type="submit" a class="btn btn-danger " data-toggle="tooltip" 
+                                                        onclick="return deleteConfirm()" >Delete</a></button>
+                                                    </form>
+                                                </td> 
+                                            </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="5">There are no data.</td>
+                                            </tr>   
+                                        @endif
+                                    </tbody>
+                                 
+                                </table>
+                                {!! $posts->links() !!}
+
+                                <!-- <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                    </ul>
+                                </nav> -->
                             </div>
                         </div>
-                    </form>
+                    </div>     
+
+                   
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+<script>
+  function deleteConfirm() {
+      if(!confirm("Are you sure to delete post?"))
+      event.preventDefault(); 
+  }
+ </script>

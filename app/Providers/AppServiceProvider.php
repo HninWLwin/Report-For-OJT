@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // Dao 
+        $this->app->bind(
+            'App\Contracts\Dao\Post\PostDaoInterface', 'App\Dao\Post\PostDao');
+
+        //Services (Business Logic)
+        $this->app->bind(
+            'App\Contracts\Services\Post\PostServiceInterface', 'App\Services\Post\PostService');
+
     }
 
     /**
@@ -23,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::useBootstrap();
         //
         \DB::listen(function($query) {
             $sql = $query->sql;
