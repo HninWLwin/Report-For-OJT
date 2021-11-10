@@ -31,8 +31,6 @@ Route::get('/create_user','UserController@create')->name('create_user');
 
 Route::get('posts/{id}', [PostController::class, 'destory'])->name('destory');
 
-Route::get('/find', 'PostController@find')->name('find');
-
-Route::post('/postRegistration', 'PostController@store')->name('create_post');
+//Route::post('/postRegistration', 'PostController@store')->name('create_post');
 
 //Route::resource('posts', 'PostsController', ['only' => ['create', 'store', 'show', 'edit', 'update', 'destroy']]);

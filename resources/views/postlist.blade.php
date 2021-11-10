@@ -26,7 +26,7 @@
                                                 <div class="col-sm-4">
                                                     <input id="keyword" type="text" class="form-control " name="keyword" >
                                                 </div>
-                                                <button type="submit" class="btn btn-success "><a href="{{ route('find') }}">{{ __('Search') }}</a></button>	&nbsp;	&nbsp;	&nbsp;
+                                                <button type="submit" class="btn btn-success "><a href="">{{ __('Search') }}</a></button>	&nbsp;	&nbsp;	&nbsp;
                                                 <button type="submit" class="btn btn-success " ><a href="{{ route('posts.create') }}">{{ __('Create') }}</a></button>&nbsp; 	&nbsp; 	&nbsp;
                                                 <button type="submit" class="btn btn-success ">{{ __('Upload') }}</button>	&nbsp;	&nbsp;	&nbsp;
                                                 <button type="submit" class="btn btn-success ">{{ __('Download') }}</button>
@@ -56,16 +56,18 @@
                                         @if (!empty($posts) && $posts->count())
                                             @foreach ($posts as $post)
                                             <tr>
-                                                <td>{{ $post->title }}</td>
+                                                <td data-toggle="modal" id="myModal" data-target="#postdetails_modal" 
+                                                
+                                                >{{ $post->title }}</td>
                                                 <td>{{ $post->description }}</td>
                                                 <td> {{ Auth::user()->name }}</td>
                                                 <td>{{ $post->created_at }}</td>
                                                 <td>
-                                                    <button type="button" a class="btn btn-primary"  data-toggle="tooltip">Edit</a></button>
-                                                    <form method="POST" action="{{ route('destory', $post->id) }}">
+                                                    <form method="POST" action="{{ route('posts.destroy', $post->id) }}">
+                                                        <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-Success">Edit</a>
+
                                                         @method('DELETE')
-                                                        @csrf
-                                                    
+                                                        @csrf   
                                                         <button type="submit" a class="btn btn-danger " data-toggle="tooltip" 
                                                         onclick="return deleteConfirm()" >Delete</a></button>
                                                     </form>
@@ -76,7 +78,37 @@
                                             <tr>
                                                 <td colspan="5">There are no data.</td>
                                             </tr>   
+
+                                            
                                         @endif
+
+                                         <!-- Modal -->
+                                        <div class="modal fade" id="postdetails_modal" tabindex="-1" role="dialog" aria-labelledby="postdetails_modalTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Post Details</h5>
+                                              
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Title - {{ $post->title }} <br>
+                                                Description - {{ $post->description }} <br>
+                                                Status - {{ $post->status }} <br>
+                                                Created Date - {{ $post->created_at }} <br>
+                                                Created User - {{ Auth::user()->name }} <br>
+                                                Updated Date - {{ $post->updated_at }} <br>
+                                                Updated User - {{ Auth::user()->name  }} <br>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+
                                     </tbody>
                                  
                                 </table>
@@ -108,4 +140,17 @@
       if(!confirm("Are you sure to delete post?"))
       event.preventDefault(); 
   }
+
+//   $('#myModal').on('click', '#postdetails_modal', function () {
+//       $tr = $(this).Closest('tr');
+//     //   var post_id = $(this).data('id');
+//     //   var 
+//       document.getElementById('title').innerHTML = title;
+//       document.getElementById('description').innerHTML = description;
+//       document.getElementById('status').innerHTML = status;
+
+//       $('.modal-title').html('Post Details');
+//       $('#id').val(id);
+//   });
+
  </script>

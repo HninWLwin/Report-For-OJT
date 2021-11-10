@@ -6,4 +6,30 @@ interface PostServiceInterface
 {
   //get post list
   public function getPostList();
+
+  /**
+     * 
+     * Store post data to table
+     *
+     * @return object
+     */
+    public function storePost($request);
+
+
+    /**
+     * 
+     * Update post data to table
+     *
+     * @return object
+     */
+    public function updatePost($request, $post);
+
+
+    /**
+     * 
+     * Delete post data from table
+     *
+     * @return object
+     */
+    public function deletePost($post);
 }

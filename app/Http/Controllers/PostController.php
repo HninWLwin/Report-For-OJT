@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Http\Requests\StorePostRequest;
 use Illuminate\Http\Request;
 use App\Contracts\Services\Post\PostServiceInterface;
-use Illuminate\Support\Facades\Input;
 use DB;
 
 class PostController extends Controller
@@ -31,26 +31,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        //$posts = $this->postInterface->getPostList();
-
-        $postLists = DB::table('posts')->orderBy('created_at', 'DESC')->paginate(3);   // need to edit in dao
-
-        return view('postList', ['posts' => $postLists]);
-    }
-
-    public function find(Request $request)
-    {
-        //$posts = $this->postInterface->getPostList();
-
-        $search =  $request->input('keyword');
-
-            $searchData = Post::where('title', 'like', '%'.$search.'%')
-                    ->orWhere('description', 'like', '%'.$search.'%')->get();
-                    if (count ( $searchData ) > 0)
-                        return view ( 'postList' )->withDetails ( $searchData )->withQuery ( $search );
-                    else
-                        return view ( 'postList' )->withMessage ( 'No Details found. Try to search again !' );		
-        
+        $posts = $this->postInterface->getPostList();
+        return view('postList', compact('posts'))
+        ->with('i', (request()->input('page', 1)-1)*5);
     }
 
     /**
@@ -69,29 +52,12 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {     
-        $request->validate([    
-            'title' => 'required',
-            'description' => 'required',
-        ]);
-
-         Post::create($request->all());
-         $data['create_user_id']=$user->id;
-
-        return redirect('postList')->with('success', 'Post created successfully.!');
-  
-        // auth()->user()->posts()->create([    
-        //     'title' => $data['title'],   
-        //     'description' => $data['description'],
-        //     'status' => $data['status']  
-        // ]); 
-
-        // return redirect()->route('home', ['user' => auth()->user() ]
-        //                 ->with('success', 'Post created successfully.'));
-   
-        // return redirect()->route('home')
-        //                 ->with('success','Post created successfully.');
+    public function store(StorePostRequest $request)
+    {
+        $this->postInterface->storePost($request);     
+        
+        return redirect()->route('postList')
+        ->with('success', 'Post created successfully.');
     }
 
     /**
@@ -102,7 +68,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('postList',compact('post'));
+        return view('postList', compact('post'));
     }
 
     /**
@@ -113,7 +79,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -123,9 +89,12 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(StorePostRequest $request, Post $post)
     {
-        //
+         $this->postInterface->updatePost($request, $post);
+         
+         return redirect()->route('postList')
+         ->with('success', 'Post updated successfully.');
     }
 
     /**
@@ -134,16 +103,10 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        Post::find($id)->delete();
-
+        $this->postInterface->deletePost($post);
         return redirect()->route('postList')
-            ->with('success','Post deleted successfully');
+            ->with('success','Post deleted successfully.!');
     }
-
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 }
