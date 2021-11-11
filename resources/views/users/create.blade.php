@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('create') }}" id="createuser-form">
+                    <form method="POST" action="{{ route('users.store') }}" id="createuser-form">
                         @csrf
 
                         <div class="form-group row">
@@ -65,7 +65,10 @@
                             <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Type*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="type" type="type" class="form-control" name="type" required autocomplete="type">
+                                <select id="type" name="type" class="form-control">
+                                    <option value="admin" >Admin</option>
+                                    <option value="user" >User</option>
+                                </select>
                             </div>
                         </div>
 
@@ -90,6 +93,14 @@
 
                             <div class="col-md-6">
                                 <input id="address" type="address" class="form-control" name="address" required autocomplete="address">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="profile" class="col-md-4 col-form-label text-md-right">{{ __('Profile*') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="profile" type="file" class="form-control" name="profile" required autocomplete="profile">
                             </div>
                         </div>
 

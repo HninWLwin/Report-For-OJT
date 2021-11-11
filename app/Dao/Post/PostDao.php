@@ -20,6 +20,22 @@ class PostDao implements PostDaoInterface
     return $posts;
   }
 
+  public function getSearchData($request)
+  {
+    $posts = Post::where([
+        [function($query) use ($request) {
+            if(($term = $request->term)) {
+                $query->orWhere('title', 'like', '%'.$term.'%')
+                    ->orWhere('description', 'like', '%'.$term.'%')->get();
+            }
+        }]
+    ])
+        ->orderBy("id")
+        ->paginate(5);
+        
+    return $posts;
+  }
+
   /**
    * store post data to table
    * 

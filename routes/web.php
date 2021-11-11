@@ -23,14 +23,11 @@ Route::get('/register', function () {
 
 Auth::routes();
 
-Route::get('/postList', [App\Http\Controllers\PostController::class, 'index'])->name('postList');
-
 Route::resource('posts', PostController::class);
-
-Route::get('/create_user','UserController@create')->name('create_user');
-
+Route::get('/postList', [App\Http\Controllers\PostController::class, 'index'])->name('postList');
+Route::get('/search_post','PostController@find')->name('search_post');
 Route::get('posts/{id}', [PostController::class, 'destory'])->name('destory');
 
-//Route::post('/postRegistration', 'PostController@store')->name('create_post');
-
-//Route::resource('posts', 'PostsController', ['only' => ['create', 'store', 'show', 'edit', 'update', 'destroy']]);
+Route::resource('users', UserController::class);
+Route::get('/userlist', 'UserController@index')->name('showUsers');
+Route::get('/search-user','UserController@find')->name('search_user');

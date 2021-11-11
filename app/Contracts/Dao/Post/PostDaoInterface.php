@@ -12,6 +12,9 @@ interface PostDaoInterface
      */
   public function getPostList();
 
+   // search data
+   public function getSearchData($request);
+
   /**
      * 
      * Store post data to table

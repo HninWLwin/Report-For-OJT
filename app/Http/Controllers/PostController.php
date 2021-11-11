@@ -32,7 +32,15 @@ class PostController extends Controller
     public function index()
     {
         $posts = $this->postInterface->getPostList();
+        
         return view('postList', compact('posts'))
+        ->with('i', (request()->input('page', 1)-1)*5);
+    }
+
+    public function find(Request $request)
+    {
+        $posts = $this->postInterface->getSearchData( $request);
+        return view('postList',['posts' => $posts])
         ->with('i', (request()->input('page', 1)-1)*5);
     }
 

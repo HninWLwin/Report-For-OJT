@@ -2,10 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\Request;
+use App\Contracts\Services\User\UserServiceInterface;
 
 class UserController extends Controller
 {
+    private $userInterface;
+
+     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(UserServiceInterface $userInterface)
+    {
+        $this->middleware('auth');
+        $this->userInterface = $userInterface;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +29,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = $this->userInterface->getUserList();
+
+        return view('users/showUsers', compact('users'))
+        ->with('i', (request()->input('page', 1)-1)*5);
     }
 
     /**
@@ -23,7 +42,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -32,9 +51,12 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $this->postInterface->storePost($request);     
+        
+        return redirect()->route('create_confirm')
+        ->with('success', 'Post created successfully.');
     }
 
     /**
@@ -66,7 +88,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreUserRequest $request, $id)
     {
         //
     }
@@ -77,8 +99,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $this->userInterface->deleteUser($user);
+
+        return redirect()->route('users/showUsers')
+            ->with('success','User deleted successfully.!');
     }
 }

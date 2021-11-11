@@ -5,30 +5,29 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Post List') }}</div>
+                <div class="card-header">{{ __('User List') }}</div>
 
                 <div class="card-body">  
                     <div class="container-lg">
                         <div class="table-responsive">
                             <div class="table-wrapper">
                             <div class="row">
-                                <div class="col-md-8">
-                                    <form action="{{ route('search_post') }}" method="GET" role="term">
-                                        @csrf
+                                <div class="col-md-12">
+                                    <form action="/posts/post/searchUser" method="POST">
+                                    @csrf
                                         <div class="row">
-                                            <div class="searchItem">keyword</div>               
-                                            <div class="searchItem"><input type="text" name="term" class="form-control" placeholder=""></div>
-                                            <a href="{{ route('search_post') }}" class=" mt-1">
+                                            <div class="searchItem">Name</div>   
+                                            <div class="searchItem"><input type="text" name="name" class="form-control" placeholder=""></div>
+                                            <div class="searchItem">Email</div>   
+                                            <div class="searchItem"><input type="email" name="email" class="form-control" placeholder=""></div>
+                                            <div class="searchItem">From</div>   
+                                            <div class="searchItem"><input type="date" name="create_at" class="form-control" placeholder=""></div>
+                                            <div class="searchItem">To</div>   
+                                            <div class="searchItem"><input type="date" name="update_at" class="form-control" placeholder=""></div>
                                             <div class="searchItem"><button type="submit" class="btn btn-primary">Search</button></div>
-                                            </a>
                                         </div>
                                     </form>
-                                </div>
-                                <div class="postOption col-md-4">
-                                    <a class="btn btn-success" href="{{ route('posts.create') }}"> Create</a>
-                                    <a class="btn btn-primary" href="/posts/post/uploadIndex"> Upload</a>
-                                    <a class="btn btn-primary" href="/posts/post/download"> Download</a>
-                                </div>
+                                </div> 
                             </div>
 
                                 @if ($message = Session::get('success'))
@@ -45,42 +44,51 @@
                                 <table class="table  table-bordered">
                                     <thead>
                                         <tr>
-                                            <th style="min-width: 200px;">Post title</th>
-                                            <th style="min-width: 394px;">Post Description</th>
-                                            <th style="min-width: 120px;">Posted User</th>
-                                            <th style="min-width: 130px;">Posted Date</th>
+                                            <th style="min-width: 394px;">Name</th>
+                                            <th style="min-width: 120px;">Email</th>
+                                            <th style="min-width: 130px;">Created User</th>
+                                            <th style="min-width: 394px;">Type</th>
+                                            <th style="min-width: 120px;">Phone</th>
+                                            <th style="min-width: 130px;">Date of Birth</th>
+                                            <th style="min-width: 130px;">Address</th>
                                             <th style="min-width: 250px;">Operation</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        @if (!empty($posts) && $posts->count())
-                                            @foreach ($posts as $post)
+                                        @if (!empty($users) && $users->count())
+                                            @foreach ($users as $user)
                                             <tr>
-                                            <td><a data-toggle="modal" id="mediumButton" data-target="#mediumModal" class="text-info" style="cursor: pointer;" data-attr="{{$post->id}}"> {{ $post->title }}</a></td>
-                                            <td scope="col">{{ $post->description }}</td>
-                                            <td scope="col">{{ $post->create_user_id == 0 ? "Admin" : "User" }}</td>
-                                            <td scope="col">{{ $post->created_at->format('Y/m/d') }}</td>
+                                            <td><a data-toggle="modal" id="mediumButton" data-target="#mediumModal" class="text-info" style="cursor: pointer;" data-attr="{{$user->id}}"> {{ $user->name }}</a></td>
+                                            <td scope="col">{{ $user->email }}</td>
+                                            <td scope="col">{{ Auth::user()->name }}</td>
+                                            <td scope="col">{{ $user->type == 0 ? "Admin" : "User" }}</td>
+                                            <td scope="col">{{ $user->phone }}</td>
+                                            <td scope="col">{{ $user->dob }}</td>
+                                            <td scope="col">{{ $user->address }}</td>
                                             <td scope="col">
-                                                <form action="{{ route('posts.destroy',$post->id) }}" method="POST">
-                                                    <a class="btn btn-primary" href="{{ route('posts.edit',$post->id) }}">Edit</a>
+                                                <form action="{{ route('users.destroy',$user->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger" onclick="return deleteConfirm()">Delete</button>
+                                                    <button type="submit" class="btn btn-danger" 
+                                                    a data-toggle="modal" id="mediumButton" data-target="#mediumModal" 
+                                                    style="cursor: pointer;" data-attr="{{$user->id}}">>Delete</a></button>
                                                 </form>
                                             </td>
                                             </tr>
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="5">No posts to display.</td>
+                                                <td colspan="5">There are no data.</td>
                                             </tr>   
+
+                                            
                                         @endif
                                     </tbody>
                                  
                                 </table>
                                 <div class="d-flex float-right">
-                                    {!! $posts->links() !!}
+                                    {!! $users->links() !!}
                                 </div>
                             </div>
                         </div>
@@ -98,19 +106,13 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Post Detail</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">User Detail</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body" id="mediumBody">
-                Title - {{ $post->title }} <br>
-                Description - {{ $post->description }} <br>
-                Status - {{ $post->status }} <br>
-                Created Date - {{ $post->created_at }} <br>
-                Created User - {{ Auth::user()->name }} <br>
-                Updated Date - {{ $post->updated_at }} <br>
-                Updated User - {{ Auth::user()->name  }} <br>
+               ...
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -132,7 +134,6 @@
     $('body').on('click', '#mediumButton', function(event) {
         event.preventDefault();
         let href = $(this).attr('data-attr');
-        alert(href);
         $.ajax({
             url: href,
             beforeSend: function() {
@@ -154,10 +155,9 @@
             },
         })
     });
+  }
 
-    function deleteConfirm() {
-      if(!confirm("Are you sure to delete post?"))
-      event.preventDefault(); 
+  
   }
 </script>
 
