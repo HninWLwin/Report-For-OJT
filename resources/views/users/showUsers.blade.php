@@ -13,18 +13,20 @@
                             <div class="table-wrapper">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form action="/posts/post/searchUser" method="POST">
+                                    <form action="{{ route('search_user') }}" method="GET" role="q">
                                     @csrf
-                                        <div class="row">
+                                        <div class="row"> 
                                             <div class="searchItem">Name</div>   
-                                            <div class="searchItem"><input type="text" name="name" class="form-control" placeholder=""></div>
+                                            <div class="searchItem col"><input type="text" name="q" class="form-control" placeholder=""></div>
                                             <div class="searchItem">Email</div>   
-                                            <div class="searchItem"><input type="email" name="email" class="form-control" placeholder=""></div>
+                                            <div class="searchItem col"><input type="email" name="q" class="form-control" placeholder=""></div>
                                             <div class="searchItem">From</div>   
-                                            <div class="searchItem"><input type="date" name="create_at" class="form-control" placeholder=""></div>
+                                            <div class="searchItem col"><input type="date" name="q" class="form-control " placeholder=""></div>
                                             <div class="searchItem">To</div>   
-                                            <div class="searchItem"><input type="date" name="update_at" class="form-control" placeholder=""></div>
-                                            <div class="searchItem"><button type="submit" class="btn btn-primary">Search</button></div>
+                                            <div class="searchItem col"><input type="date" name="q" class="form-control " placeholder=""></div>
+                                            <a href="{{ route('search_user') }}" class=" mt-1">
+                                                <div class="searchItem"><button type="submit" class="btn btn-primary">Search</button></div>
+                                            </a>
                                         </div>
                                     </form>
                                 </div> 
@@ -44,13 +46,15 @@
                                 <table class="table  table-bordered">
                                     <thead>
                                         <tr>
-                                            <th style="min-width: 394px;">Name</th>
+                                            <th style="min-width: 200px;">Name</th>
                                             <th style="min-width: 120px;">Email</th>
                                             <th style="min-width: 130px;">Created User</th>
-                                            <th style="min-width: 394px;">Type</th>
+                                            <th style="min-width: 120px;">Type</th>
                                             <th style="min-width: 120px;">Phone</th>
                                             <th style="min-width: 130px;">Date of Birth</th>
                                             <th style="min-width: 130px;">Address</th>
+                                            <th style="min-width: 130px;">Created_date</th>
+                                            <th style="min-width: 130px;">Updated_date</th>
                                             <th style="min-width: 250px;">Operation</th>
                                         </tr>
                                     </thead>
@@ -59,22 +63,20 @@
                                         @if (!empty($users) && $users->count())
                                             @foreach ($users as $user)
                                             <tr>
-                                            <td><a data-toggle="modal" id="mediumButton" data-target="#mediumModal" class="text-info" style="cursor: pointer;" data-attr="{{$user->id}}"> {{ $user->name }}</a></td>
-                                            <td scope="col">{{ $user->email }}</td>
-                                            <td scope="col">{{ Auth::user()->name }}</td>
-                                            <td scope="col">{{ $user->type == 0 ? "Admin" : "User" }}</td>
-                                            <td scope="col">{{ $user->phone }}</td>
-                                            <td scope="col">{{ $user->dob }}</td>
-                                            <td scope="col">{{ $user->address }}</td>
-                                            <td scope="col">
-                                                <form action="{{ route('users.destroy',$user->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger" 
-                                                    a data-toggle="modal" id="mediumButton" data-target="#mediumModal" 
-                                                    style="cursor: pointer;" data-attr="{{$user->id}}">>Delete</a></button>
-                                                </form>
-                                            </td>
+                                                <td><a data-toggle="modal" id="mediumButton" data-target="#mediumModal" class="text-info" style="cursor: pointer;" data-attr="{{$user->id}}"> {{ $user->name }}</a></td>
+                                                <td scope="col">{{ $user->email }}</td>
+                                                <td scope="col">{{ Auth::user()->name }}</td>
+                                                <td scope="col">{{ $user->type == 0 ? "Admin" : "User" }}</td>
+                                                <td scope="col">{{ $user->phone }}</td>
+                                                <td scope="col">{{ $user->dob }}</td>
+                                                <td scope="col">{{ $user->address }}</td>
+                                                <td scope="col">{{ $user->created_at }}</td>
+                                                <td scope="col">{{ $user->updated_at }}</td>
+                                                <td scope="col">
+                                                    
+                                                        <button type="submit" class="btn btn-danger " onclick="return confirm('Are you sure want to delete user?')" href="{{ route('users.destroy',$user->id) }}" >Delete</button>
+                                                    
+                                                </td>
                                             </tr>
                                             @endforeach
                                         @else
@@ -112,7 +114,7 @@
                 </button>
             </div>
             <div class="modal-body" id="mediumBody">
-               ...
+               Name -> {{ $user->name }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -123,17 +125,22 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery .dataTables.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
 
 <script type="text/javascript">
+    function deleteConfirm() {
+      if(!confirm("Are you sure to delete user?"))
+      event.preventDefault(); 
+}
     // when click detail
     $('body').on('click', '#mediumButton', function(event) {
         event.preventDefault();
-        let href = $(this).attr('data-attr');
+        let href = $(this).id('data-id');
+        alert(href);
         $.ajax({
             url: href,
             beforeSend: function() {

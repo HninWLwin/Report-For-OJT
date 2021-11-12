@@ -49,7 +49,7 @@
                                             <th style="min-width: 394px;">Post Description</th>
                                             <th style="min-width: 120px;">Posted User</th>
                                             <th style="min-width: 130px;">Posted Date</th>
-                                            <th style="min-width: 250px;">Operation</th>
+                                            <th style="min-width: 120px;">Operation</th>
                                         </tr>
                                     </thead>
 
@@ -57,7 +57,7 @@
                                         @if (!empty($posts) && $posts->count())
                                             @foreach ($posts as $post)
                                             <tr>
-                                            <td><a data-toggle="modal" id="mediumButton" data-target="#mediumModal" class="text-info" style="cursor: pointer;" data-attr="{{$post->id}}"> {{ $post->title }}</a></td>
+                                            <td><a data-toggle="modal" id="mediumButton" data-target="#mediumModal" class="text-info" style="cursor: pointer;" data-id="{{$post->id}}"> {{ $post->title }}</a></td>
                                             <td scope="col">{{ $post->description }}</td>
                                             <td scope="col">{{ $post->create_user_id == 0 ? "Admin" : "User" }}</td>
                                             <td scope="col">{{ $post->created_at->format('Y/m/d') }}</td>
@@ -128,28 +128,37 @@
 
 
 <script type="text/javascript">
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
     // when click detail
     $('body').on('click', '#mediumButton', function(event) {
         event.preventDefault();
-        let href = $(this).attr('data-attr');
-        alert(href);
+        var post_id = $(this).data('id');
+        let url = "{!! route('postList') !!}"
+        //let url = $(this).attr('data-attr');
         $.ajax({
-            url: href,
-            beforeSend: function() {
-                $('#loader').show();
+            url: url,
+            type: 'get',
+            data : {
+                id: post_id
             },
             // return the result
             success: function(result) {
                 // $('#mediumModal').modal("show");
                 $('#mediumModal').appendTo("body");
                 $('#mediumBody').html(result).show();
-            },
+            },  
             complete: function() {
                 $('#loader').hide();
             },
             error: function(jqXHR, testStatus, error) {
                 console.log(error);
-                alert("Page " + href + " cannot open. Error:" + error);
+                alert("URL " + url + " cannot open. Error:" + error);
                 $('#loader').hide();
             },
         })

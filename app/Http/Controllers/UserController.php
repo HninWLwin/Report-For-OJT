@@ -36,6 +36,19 @@ class UserController extends Controller
     }
 
     /**
+     * search user data.
+     *
+     * 
+     */
+    public function find(Request $request)
+    {
+        $users = $this->userInterface->getSearchData( $request);
+
+        return view('users/showUsers',['users' => $users])
+        ->with('i', (request()->input('page', 1)-1)*5);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -43,6 +56,11 @@ class UserController extends Controller
     public function create()
     {
         return view('users.create');
+    }
+
+    public function confirm_registration(User $user)
+    {
+        return view('users.confirm_registration');
     }
 
     /**
@@ -53,10 +71,10 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $this->postInterface->storePost($request);     
+        $this->userInterface->storeUser($request);     
         
-        return redirect()->route('create_confirm')
-        ->with('success', 'Post created successfully.');
+        return redirect()->route('showUsers')
+        ->with('success', 'User created successfully.');
     }
 
     /**
@@ -103,7 +121,7 @@ class UserController extends Controller
     {
         $this->userInterface->deleteUser($user);
 
-        return redirect()->route('users/showUsers')
+        return redirect()->route('showUsers')
             ->with('success','User deleted successfully.!');
     }
 }

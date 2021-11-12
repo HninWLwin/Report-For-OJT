@@ -25,7 +25,10 @@ class UserDao implements UserDaoInterface
     $users = User::where([
         [function($query) use ($request) {
             if(($q = $request->q)) {
-                $query->orWhere('name', 'like', '%'.$q.'%')->get();
+                $query->orWhere('name', 'like', '%'.$q.'%')
+                    ->orWhere('email', 'like', '%'.$q.'%')
+                    ->orWhere('created_at', 'like', '%'.$q.'%')
+                    ->orWhere('updated_at', 'like', '%'.$q.'%')->get();
             }
         }]
     ])

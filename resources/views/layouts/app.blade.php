@@ -34,15 +34,15 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                     
-                    <a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
                         Bulletin_Board
                     </a> &nbsp; &nbsp; &nbsp;
 
-                    <a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
                         Posts
                     </a> &nbsp; &nbsp; &nbsp;
 
-                    <a href="{{ route('showUsers') }}" role="button"  aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a href="{{ route('showUsers') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
                         Users
                     </a> 
 
@@ -56,7 +56,7 @@
                             
 
                         @else   
-                            <a href="{{ route('users.create') }}" role="button"  aria-haspopup="true" aria-expanded="false" v-pre>
+                            <a href="{{ route('users.create') }}"  >
                                 Create User
                             </a>  &nbsp; &nbsp; &nbsp;
 
@@ -66,23 +66,14 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" 
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('profile-form').submit();">
-                                        {{ __('Profile') }}
-                                    </a>
+                                
+                                    <a class="dropdown-item" href="#">Profile</a>
 
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" >
+                                    @csrf
+                                        <a class="dropdown-item" onclick="event.preventDefault();document.getElementById('logout-form').submit();"> Logout</a>
                                     </form>
-                                </div>
+                               
                             </li>
                         @endguest
                     </ul>

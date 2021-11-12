@@ -31,3 +31,5 @@ Route::get('posts/{id}', [PostController::class, 'destory'])->name('destory');
 Route::resource('users', UserController::class);
 Route::get('/userlist', 'UserController@index')->name('showUsers');
 Route::get('/search-user','UserController@find')->name('search_user');
+//Route::get('users/{id}', [UserController::class, 'destory'])->name('destory');
+Route::post('/confirm','UserController@confirm_registration')->name('confirm_registration');

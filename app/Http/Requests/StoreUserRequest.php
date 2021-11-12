@@ -13,7 +13,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,24 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'type' => 'required',
+            'phone' => 'required',
+            'dob' => 'required',
+            'address' => 'required',
+            'profile' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'name is required.',
+            'email.required' => 'email is required',
+            'password.required' => 'password is required.',
+            'password_confirmation.required' => 'password_confirmation is required',
         ];
     }
 }

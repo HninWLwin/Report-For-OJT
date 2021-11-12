@@ -6,9 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Create Post') }}</div>
-                <div class="pull-right">
-                    <a href="{{ route('postList') }}" class="btn btn-primary">Back</a>
-                </div>
+               
 
                 <div class="card-body">
                     <form id="registerpostform" method="POST" action="{{ route('posts.store') }}">
@@ -39,10 +37,8 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-success">
-                                    {{ __('Create') }}
-                                </button>
-                               
+                                <a  class="btn btn-success">Create</a>
+                                <a  class="btn btn-secondary">Clear</a>
                             </div>
                         </div>
 
