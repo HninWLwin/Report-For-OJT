@@ -63,7 +63,19 @@
                                         @if (!empty($users) && $users->count())
                                             @foreach ($users as $user)
                                             <tr>
-                                                <td><a data-toggle="modal" id="mediumButton" data-target="#mediumModal" class="text-info" style="cursor: pointer;" data-attr="{{$user->id}}"> {{ $user->name }}</a></td>
+                                                <td><a data-toggle="modal" id="mediumButton" data-target="#mediumModal" class="text-info" style="cursor: pointer;" 
+                                                data-id="{{$user->id}}"
+                                                data-name="{{$user->name}}"
+                                                data-type="{{$user->type}}"
+                                                data-email="{{$user->email}}"
+                                                data-phone="{{$user->phone}}"
+                                                data-dob="{{$user->dob}}"
+                                                data-address="{{$user->address}}"
+                                                data-profile="{{$user->profile}}"
+                                                data-created_at="{{$user->created_at}}"
+                                                data-create_user_id="{{Auth::user()->name}}"
+                                                data-updated_at="{{$user->updated_at}}"
+                                                data-updated_user_id="{{Auth::user()->name}}"> {{ $user->name }}</a></td>
                                                 <td scope="col">{{ $user->email }}</td>
                                                 <td scope="col">{{ Auth::user()->name }}</td>
                                                 <td scope="col">{{ $user->type == 0 ? "Admin" : "User" }}</td>
@@ -114,7 +126,7 @@
                 </button>
             </div>
             <div class="modal-body" id="mediumBody">
-               Name -> {{ $user->name }}
+               
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -132,40 +144,71 @@
 
 
 <script type="text/javascript">
-    function deleteConfirm() {
-      if(!confirm("Are you sure to delete user?"))
-      event.preventDefault(); 
-}
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
     // when click detail
     $('body').on('click', '#mediumButton', function(event) {
         event.preventDefault();
-        let href = $(this).id('data-id');
-        alert(href);
+        var user_id = $(this).data('id');
+        var user_name = $(this).data('name');
+        var user_type = $(this).data('type');
+        var user_email = $(this).data('email');
+        var user_phone = $(this).data('phone');
+        var user_dob = $(this).data('dob');
+        var user_address = $(this).data('address');
+        var user_profile = $(this).data('profile');
+        var user_created_at = $(this).data('created_at');
+        var user_create_user_id = $(this).data('create_user_id');
+        var user_updated_at = $(this).data('updated_at');
+        var user_updated_user_id = $(this).data('updated_user_id');
+        let url = "{!! route('showUsers') !!}"
+        //let url = $(this).attr('data-attr');
         $.ajax({
-            url: href,
-            beforeSend: function() {
-                $('#loader').show();
+            url: url,
+            type: 'get',
+            data : {
+                id: user_id,
+                name: user_name,
+                type: user_type,
+                email: user_email,
+                phone: user_phone,
+                dob: user_dob,
+                address: user_address,
+                profile: user_profile,
+                created_at: user_created_at,
+                create_user_id: user_create_user_id,
+                updated_at: user_updated_at,
+                updated_user_id: user_updated_user_id
             },
             // return the result
             success: function(result) {
-                // $('#mediumModal').modal("show");
-                $('#mediumModal').appendTo("body");
-                $('#mediumBody').html(result).show();
-            },
+                $('#mediumBody').html("<img src =" + user_profile + " style='height:150px'><br>" + "Name  - " + user_name + "<br>" + 
+                                        "Type  - " + user_type + "<br>" + 
+                                        "Email  - " + user_email + "<br>" + 
+                                        "Phone  - " + user_phone + "<br>" + 
+                                        "Date of Birth  - " + user_dob + "<br>" + 
+                                        "Address  - " + user_address + "<br>" + 
+                                        "Created Date  - " + user_created_at + "<br>" + 
+                                        "Created User  - " + user_create_user_id + "<br>" + 
+                                        "Updated Date  - " + user_updated_at + "<br>" +
+                                        "Updated User  - " + user_updated_user_id ).show();
+            
+            },  
             complete: function() {
                 $('#loader').hide();
             },
             error: function(jqXHR, testStatus, error) {
                 console.log(error);
-                alert("Page " + href + " cannot open. Error:" + error);
+                alert("URL " + url + " cannot open. Error:" + error);
                 $('#loader').hide();
             },
         })
     });
-  }
-
-  
-  }
 </script>
 
 <style>

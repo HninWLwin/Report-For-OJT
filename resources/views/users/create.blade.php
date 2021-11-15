@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('confirm_registration' ) }}" id="createuser-form">
+                    <form method="POST" action="{{ route('confirm_registration' ) }}" >
                     @csrf
 
                         <div class="form-group row">
@@ -110,7 +110,7 @@
                                 <button type="submit" class="btn btn-primary" >
                                     {{ __('Register') }} 
                                 </button>
-                                <a  class="btn btn-secondary">Clear</a>
+                                <input type="reset" class="btn btn-secondary" value="Clear"/>
                             </div>
                         </div>
                     </form>

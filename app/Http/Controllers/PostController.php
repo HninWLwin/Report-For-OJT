@@ -54,6 +54,13 @@ class PostController extends Controller
         return view('posts.create');
     }
 
+    public function post_confirm_registration(StorePostRequest $request)
+    {
+       // dd($request);
+        $post = new Post($request->all());
+        return view('posts.post_confirm_registration', compact('post'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -113,8 +120,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        dd($post);  
         $this->postInterface->deletePost($post);
-        
         return redirect()->route('postList')
             ->with('success','Post deleted successfully.!');
     }

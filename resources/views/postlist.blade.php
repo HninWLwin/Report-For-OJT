@@ -57,16 +57,28 @@
                                         @if (!empty($posts) && $posts->count())
                                             @foreach ($posts as $post)
                                             <tr>
-                                            <td><a data-toggle="modal" id="mediumButton" data-target="#mediumModal" class="text-info" style="cursor: pointer;" data-id="{{$post->id}}"> {{ $post->title }}</a></td>
+                                            <td><a data-toggle="modal" id="mediumButton" data-target="#mediumModal" class="text-info" style="cursor: pointer;" 
+                                            data-id="{{$post->id}}"
+                                            data-title="{{$post->title}}"
+                                            data-description="{{$post->description}}"
+                                            data-status="{{$post->status}}"
+                                            data-created_at="{{$post->created_at}}"
+                                            data-create_user_id="{{Auth::user()->name}}"
+                                            data-updated_at="{{$post->updated_at}}"
+                                            data-updated_user_id="{{Auth::user()->name}}"> {{ $post->title }}</a></td>
                                             <td scope="col">{{ $post->description }}</td>
                                             <td scope="col">{{ $post->create_user_id == 0 ? "Admin" : "User" }}</td>
                                             <td scope="col">{{ $post->created_at->format('Y/m/d') }}</td>
                                             <td scope="col">
                                                 <form action="{{ route('posts.destroy',$post->id) }}" method="POST">
                                                     <a class="btn btn-primary" href="{{ route('posts.edit',$post->id) }}">Edit</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger" onclick="return deleteConfirm()">Delete</button>
+                                                    
+                                                    <button type="submit" class="btn btn-danger" a data-toggle="modal" id="deleteConfirmBtn" data-target="#delMediumModal"  
+                                                    class="text-info" style="cursor: pointer;"
+                                                    data-id="{{ $post->id }}"
+                                                    data-title="{{$post->title}}"
+                                                    data-description="{{$post->description}}" 
+                                                    data-status="{{$post->status}}" >Delete</a></button>
                                                 </form>
                                             </td>
                                             </tr>
@@ -75,13 +87,13 @@
                                             <tr>
                                                 <td colspan="5">No posts to display.</td>
                                             </tr>   
-                                        @endif
+                                        @endif  
                                     </tbody>
                                  
                                 </table>
                                 <div class="d-flex float-right">
                                     {!! $posts->links() !!}
-                                </div>
+                                </div>  
                             </div>
                         </div>
                     </div>     
@@ -92,7 +104,7 @@
 </div>
 @endsection
 
-<!-- Modal -->
+<!-- Modal for Post Detail -->
 
 <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -104,17 +116,37 @@
                 </button>
             </div>
             <div class="modal-body" id="mediumBody">
-                Title - {{ $post->title }} <br>
-                Description - {{ $post->description }} <br>
-                Status - {{ $post->status }} <br>
-                Created Date - {{ $post->created_at }} <br>
-                Created User - {{ Auth::user()->name }} <br>
-                Updated Date - {{ $post->updated_at }} <br>
-                Updated User - {{ Auth::user()->name  }} <br>
+               
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
+        </div>description
+    </div>
+</div>
+
+<!-- Modal for Delete Confirmation -->
+<div class="modal fade" id="delMediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Delete Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('posts.destroy',$post->id) }}" method="POST">
+            <div class="modal-body" id="delConfBody">
+                @csrf
+                @method('DELETE')
+                
+                <input type="hidden" id="id" name="id" >
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" name="deleteConfirm_post"  class="btn btn-danger ">Delete</button>
+            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -135,23 +167,36 @@ $.ajaxSetup({
     }
 });
 
-    // when click detail
-    $('body').on('click', '#mediumButton', function(event) {
+    // when click delete button
+    $('body').on('click', '#deleteConfirmBtn', function() {
         event.preventDefault();
         var post_id = $(this).data('id');
-        let url = "{!! route('postList') !!}"
-        //let url = $(this).attr('data-attr');
+        var post_title = $(this).data('title');
+        var post_description = $(this).data('description');
+        var post_status = $(this).data('status');
+        let url = "{!! route('postList') !!}";
+        
         $.ajax({
-            url: url,
+            url: url ,       
             type: 'get',
             data : {
-                id: post_id
+                id: post_id,
+                title: post_title,
+                description: post_description,
+                status: post_status
             },
             // return the result
             success: function(result) {
-                // $('#mediumModal').modal("show");
-                $('#mediumModal').appendTo("body");
-                $('#mediumBody').html(result).show();
+                $('#delConfBody').html(" <h5><b>Are you sure to delete post? </h5><br></b>" + 
+                                        "ID &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp; &nbsp; " + post_id + "<br><br>" + 
+                                        "Title  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;  &nbsp; " + post_title + "<br><br>" + 
+                                        "Description  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; " + post_description + "<br><br>" + 
+                                        "Status  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; " + post_status ).show();
+                $('#id').val(post_id);
+                $('button[name="deleteConfirm_post"]').val(post_id);
+               // $('#delete-form').attr('action', '/{{ route('posts.destroy',$post->id) }}' + post_id );
+                
+            
             },  
             complete: function() {
                 $('#loader').hide();
@@ -164,10 +209,56 @@ $.ajaxSetup({
         })
     });
 
-    function deleteConfirm() {
-      if(!confirm("Are you sure to delete post?"))
-      event.preventDefault(); 
-  }
+
+ // when click detail
+ $('body').on('click', '#mediumButton', function(event) {
+        event.preventDefault();
+        var post_id = $(this).data('id');
+        var post_title = $(this).data('title');
+        var post_description = $(this).data('description');
+        var post_status = $(this).data('status');
+        var post_created_at = $(this).data('created_at');
+        var post_create_user_id = $(this).data('create_user_id');
+        var post_updated_at = $(this).data('updated_at');
+        var post_updated_user_id = $(this).data('updated_user_id');
+        let url = "{!! route('postList') !!}"
+        //let url = $(this).attr('data-attr');
+        $.ajax({
+            url: url,
+            type: 'get',
+            data : {
+                id: post_id,
+                title: post_title,
+                description: post_description,
+                status: post_status,
+                created_at: post_created_at,
+                create_user_id: post_create_user_id,
+                updated_at: post_updated_at,
+                updated_user_id: post_updated_user_id
+            },
+            // return the result
+            success: function(result) {
+                // $('#mediumModal').modal("show");
+                //$('#mediumModal').appendTo("body");
+                $('#mediumBody').html("Title &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;  &nbsp;      " + post_title + "<br><br>" + 
+                                        "Description &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;   " + post_description + "<br><br>" + 
+                                        "Status  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;     " + post_status + "<br><br>" + 
+                                        "Created Date  &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;      " + post_created_at + "<br><br>" + 
+                                        "Created User  &emsp;&emsp;&emsp;&emsp;&emsp;&ensp;  " + post_create_user_id + "<br><br>" + 
+                                        "Updated Date  &emsp;&emsp;&emsp;&emsp;&emsp; " + post_updated_at + "<br><br>" +
+                                        "Updated User  &emsp;&emsp;&emsp;&emsp;&emsp; " + post_updated_user_id ).show();
+            },  
+            complete: function() {
+                $('#loader').hide();
+            },
+            error: function(jqXHR, testStatus, error) {
+                console.log(error);
+                alert("URL " + url + " cannot open. Error:" + error);
+                $('#loader').hide();
+            },
+        })
+    });
+
 </script>
 
 <style>

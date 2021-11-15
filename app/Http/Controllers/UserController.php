@@ -58,9 +58,10 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    public function confirm_registration(User $user)
+    public function confirm_registration(StoreUserRequest $request)
     {
-        return view('users.confirm_registration');
+        $user = new User($request->all());
+        return view('users.confirm_registration', compact('user'));
     }
 
     /**
@@ -71,9 +72,10 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        //dd($request);
         $this->userInterface->storeUser($request);     
-        
-        return redirect()->route('showUsers')
+       
+        return redirect()->route('users/showUsers')
         ->with('success', 'User created successfully.');
     }
 
