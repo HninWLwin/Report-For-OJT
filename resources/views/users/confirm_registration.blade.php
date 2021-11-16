@@ -36,10 +36,10 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Password Confirmation*') }}</label>
+                            <label for="password_confirmation" class="col-md-4 col-form-label text-md-right">{{ __('Password Confirmation*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control"  value="{{ $user->password_confirmation }}" disabled>
+                                <input id="password_confirmation" type="password_confirmation" class="form-control"  value="{{ $user->password_confirmation }}" disabled>
                             </div>
                         </div>
 

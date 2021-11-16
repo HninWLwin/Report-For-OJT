@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\StoreUserPasswordChangeRequest;
 use Illuminate\Http\Request;
 use App\Contracts\Services\User\UserServiceInterface;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -72,10 +76,10 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //dd($request);
+        dd($request);
         $this->userInterface->storeUser($request);     
        
-        return redirect()->route('users/showUsers')
+        return redirect()->route('showUsers')   
         ->with('success', 'User created successfully.');
     }
 
@@ -108,9 +112,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreUserRequest $request, User $user)
+    public function update(Request $request, User $user)
     {
-        $this->userInterface->updateProfile($request, $post);
+        $this->userInterface->updateProfile($request, $user);
          
          return redirect()->route('showUsers')
          ->with('success', 'User Profile successfully updated.');
@@ -133,5 +137,31 @@ class UserController extends Controller
     public function profile(User $user)
     {
         return view('users.profile', compact('user'));
+    }
+
+    public function change_password(Request $request, User $user)
+    {
+        return view('users.change_password');
+    }
+
+    public function update_password(StoreUserPasswordChangeRequest $request)
+    {
+        dd($request);
+        User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
+
+        if (Hash::check($request->password, Auth::user()->password)) { 
+            $user->fill([
+             'password' => Hash::make($request->new_password)
+             ])->save();        
+         
+            $request->session()->flash('success', 'Password changed');
+             return redirect()->route('showUsers')
+                ->with('success', 'Password Update successfully');;
+         
+         } else {
+             $request->session()->flash('error', 'Password does not match');
+             return redirect()->route('change_password');
+         }
+
     }
 }

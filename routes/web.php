@@ -34,6 +34,7 @@ Route::post('posts/{post}','PostController@update_confirm')->name('update_confir
 Route::resource('users', UserController::class);
 Route::get('/userlist', 'UserController@index')->name('showUsers');
 Route::get('/search-user','UserController@find')->name('search_user');
-//Route::get('users/{id}', [UserController::class, 'destory'])->name('destory'  );
 Route::post('users/confirm_registration','UserController@confirm_registration')->name('confirm_registration');
-Route::get('users/{user}/profile','UserController@profile')->name('profile');       
+Route::get('users/{user}/profile','UserController@profile')->name('profile');      
+Route::get('users/{user}/change_password','UserController@change_password')->name('change_password');  
+Route::post('users/{user}/update_password','UserController@update_password')->name('update_password'); 
