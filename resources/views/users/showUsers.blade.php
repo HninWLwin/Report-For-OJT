@@ -85,8 +85,17 @@
                                                 <td scope="col">{{ $user->created_at }}</td>
                                                 <td scope="col">{{ $user->updated_at }}</td>
                                                 <td scope="col">
-                                                    
-                                                        <button type="submit" class="btn btn-danger " onclick="return confirm('Are you sure want to delete user?')" href="{{ route('users.destroy',$user->id) }}" >Delete</button>
+                                                    <button type="submit" class="btn btn-danger" a data-toggle="modal" id="deleteConfirmBtn" data-target="#delMediumModal"  
+                                                        class="text-info" style="cursor: pointer;"
+                                                        data-id="{{ $user->id }}"
+                                                        data-name="{{ $user->name }}"
+                                                        data-type="{{ $user->type }}" 
+                                                        data-email="{{ $user->email }}"
+                                                        data-phone="{{ $user->phone }}"
+                                                        data-dob="{{ $user->dob }}" 
+                                                        data-address="{{ $user->address }}"
+                                                        data-url="{!! URL::route('users.destroy', $user->id) !!}">Delete</a>
+                                                    </button>
                                                     
                                                 </td>
                                             </tr>
@@ -114,7 +123,7 @@
 </div>
 @endsection
 
-<!-- Modal -->
+<!-- Modal for user detail -->
 
 <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -135,6 +144,32 @@
     </div>
 </div>
 
+<!-- Modal for Delete Confirmation -->
+<form action="{{ route('users.destroy',$user->id) }}" method="POST" class="remove-record-model">
+@csrf
+@method('DELETE')
+
+    <div class="modal fade" id="delMediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Confirm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="delConfBody">
+                   
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="deleteConfirm_post"  class="btn btn-danger ">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery .dataTables.js"></script>
@@ -150,6 +185,57 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
+
+// when click delete button
+    $('body').on('click', '#deleteConfirmBtn', function() {
+        event.preventDefault();
+        var user_id = $(this).data('id');
+        var user_name = $(this).data('name');
+        var user_type = $(this).data('type');
+        var user_email = $(this).data('email');
+        var user_phone = $(this).data('phone');
+        var user_dob = $(this).data('dob');
+        var user_address = $(this).data('address');
+        let url = "{!! route('showUsers') !!}";
+        var delurl = $(this).attr('data-url');
+        
+        $.ajax({
+            url: url ,       
+            type: 'get',
+            data : {
+                id: user_id,
+                name: user_name,
+                type: user_type,
+                email: user_email,
+                phone: user_phone,
+                dob: user_dob,
+                address: user_address,
+            },
+            // return the result
+            success: function(result) {
+                $('#delConfBody').html(" <h5><b>Are you sure to delete user? </h5><br></b>" + 
+                                        "ID &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp; &nbsp; " + user_id + "<br><br>" + 
+                                        "Name  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;  " + user_name + "<br><br>" + 
+                                        "Type  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;" + user_type + "<br><br>" + 
+                                        "Email  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; " + user_email  + "<br><br>" + 
+                                        "Phone  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;  " + user_phone + "<br><br>" + 
+                                        "Date of Birth  &emsp;&emsp;&emsp;&emsp;&emsp; " + user_dob + "<br><br>" + 
+                                        "Address  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; " + user_address).show();
+               
+                $(".remove-record-model").attr("action",delurl);
+            
+            },  
+            complete: function() {
+                $('#loader').hide();
+            },
+            error: function(jqXHR, testStatus, error) {
+                console.log(error);
+                alert("URL " + url + " cannot open. Error:" + error);
+                $('#loader').hide();
+            },
+        })
+    });
+
 
     // when click detail
     $('body').on('click', '#mediumButton', function(event) {
@@ -187,7 +273,7 @@ $.ajaxSetup({
             },
             // return the result
             success: function(result) {
-                $('#mediumBody').html("<img src =" + user_profile + " style='height:150px'><br>" + "Name  - " + user_name + "<br>" + 
+                $('#mediumBody').html("<img src =/uploads/images/" + user_profile + " style='width:150px;height:150px'><br>" + "Name  - " + user_name + "<br>" + 
                                         "Type  - " + user_type + "<br>" + 
                                         "Email  - " + user_email + "<br>" + 
                                         "Phone  - " + user_phone + "<br>" + 

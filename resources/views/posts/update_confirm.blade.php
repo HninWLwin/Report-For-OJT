@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Edit Post') }}</div>
               
                 <div class="card-body">
-                    <form  id="editpostform" method="POST" action="{{ route('posts.update', $post->id) }}">
+                    <form method="POST" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">    
@@ -29,6 +29,15 @@
                             </div>
                         </div>
 
+                        <div class="form-group row ">
+                            <label for="flexSwitchCheckChecked" class="col-md-4 col-form-label text-md-right form-check-label">Status</label>
+                            <div class="col-md-6">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" name="status" type="checkbox" id="flexSwitchCheckChecked" {{  ($post->status == 1 ? ' checked' : '') }} />
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">Confirm</button>
@@ -42,9 +51,3 @@
     </div>
 </div>
 @endsection
-
-<script>
- function resetForm() {
-   document.getElementById("editpostform").reset();
- }
- </script>

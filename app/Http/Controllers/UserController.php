@@ -96,9 +96,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        return view('users.userEdit', compact('user'));
     }
 
     /**
@@ -108,9 +108,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreUserRequest $request, $id)
+    public function update(StoreUserRequest $request, User $user)
     {
-        //
+        $this->userInterface->updateProfile($request, $post);
+         
+         return redirect()->route('showUsers')
+         ->with('success', 'User Profile successfully updated.');
     }
 
     /**
@@ -125,5 +128,10 @@ class UserController extends Controller
 
         return redirect()->route('showUsers')
             ->with('success','User deleted successfully.!');
+    }
+
+    public function profile(User $user)
+    {
+        return view('users.profile', compact('user'));
     }
 }

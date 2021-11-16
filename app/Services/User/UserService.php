@@ -67,9 +67,9 @@ class UserService implements UserServiceInterface
      *
      * @return object
      */
-    public function updateUser($request, $user)
+    public function updateProfile($request, $user)
     {
-        $result = $this->userDao->updateUser($request, $user);
+        $result = $this->userDao->updateProfile($request, $user);
         
         if ($result) {
             return $result;

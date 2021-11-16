@@ -58,7 +58,7 @@ class UserDao implements UserDaoInterface
      *
      * @return object
      */
-    public function updateUser($request, $user)
+    public function updateProfile($request, $user)
     {
         $result = $user->update($request->all());
 

@@ -6,8 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Create Post') }}</div>
-               
-
+    
                 <div class="card-body">
                     <form  method="POST" action="{{ route('posts.store') }}">
                         @csrf
@@ -34,8 +33,8 @@
                             <div class="col-md-6 offset-md-4">
                             <button type="submit" class="btn btn-success" >
                                     {{ __('Confirm') }} 
-                                </button>
-                                <a href="{{ url()->previous(), $post->id }}" class="btn btn-secondary">Cancel</a>
+                            </button>
+                            <a href="{{ url()->previous(), $post->id }}" class="btn btn-secondary">Cancel</a>
                             </div>
                         </div>
 

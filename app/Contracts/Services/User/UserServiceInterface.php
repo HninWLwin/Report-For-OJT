@@ -22,7 +22,7 @@ interface UserServiceInterface
      *
      * @return object
      */
-    public function updateUser($request, $user);
+    public function updateProfile($request, $user);
 
 
     /**

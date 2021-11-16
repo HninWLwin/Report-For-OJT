@@ -97,6 +97,20 @@ class PostController extends Controller
         return view('posts.edit', compact('post'));
     }
 
+      /**
+     * For update confirmation
+     *
+     * 
+     * 
+     */
+    public function update_confirm(StorePostRequest $request)
+    {
+        $post = new Post($request->all());
+        $post->status = $request->has('status') ? 1 : 0;
+        //dd($post);
+        return view('posts.update_confirm', compact('post'));
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -106,7 +120,9 @@ class PostController extends Controller
      */
     public function update(StorePostRequest $request, Post $post)
     {
+       // dd($request);
          $this->postInterface->updatePost($request, $post);
+         $post->status = $request->has('status') ? 1 : false;
          
          return redirect()->route('postList')
          ->with('success', 'Post updated successfully.');
@@ -120,7 +136,6 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        dd($post);  
         $this->postInterface->deletePost($post);
         return redirect()->route('postList')
             ->with('success','Post deleted successfully.!');

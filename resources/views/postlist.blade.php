@@ -78,7 +78,7 @@
                                                     data-id="{{ $post->id }}"
                                                     data-title="{{$post->title}}"
                                                     data-description="{{$post->description}}" 
-                                                    data-status="{{$post->status}}" >Delete</a></button>
+                                                    data-status="{{$post->status}}" data-url="{!! URL::route('posts.destroy', $post->id) !!}">Delete</a></button>
                                                 </form>
                                             </td>
                                             </tr>
@@ -126,30 +126,30 @@
 </div>
 
 <!-- Modal for Delete Confirmation -->
-<div class="modal fade" id="delMediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Delete Confirm</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<form action="{{ route('posts.destroy',$post->id) }}" method="POST" class="remove-record-model">
+@csrf
+@method('DELETE')
+
+    <div class="modal fade" id="delMediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Confirm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="delConfBody">
+                   
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="deleteConfirm_post"  class="btn btn-danger ">Delete</button>
+                </div>
             </div>
-            <form action="{{ route('posts.destroy',$post->id) }}" method="POST">
-            <div class="modal-body" id="delConfBody">
-                @csrf
-                @method('DELETE')
-                
-                <input type="hidden" id="id" name="id" >
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" name="deleteConfirm_post"  class="btn btn-danger ">Delete</button>
-            </div>
-            </form>
         </div>
     </div>
-</div>
+</form>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
@@ -175,6 +175,7 @@ $.ajaxSetup({
         var post_description = $(this).data('description');
         var post_status = $(this).data('status');
         let url = "{!! route('postList') !!}";
+        var delurl = $(this).attr('data-url');
         
         $.ajax({
             url: url ,       
@@ -192,10 +193,8 @@ $.ajaxSetup({
                                         "Title  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;  &nbsp; " + post_title + "<br><br>" + 
                                         "Description  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; " + post_description + "<br><br>" + 
                                         "Status  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; " + post_status ).show();
-                $('#id').val(post_id);
-                $('button[name="deleteConfirm_post"]').val(post_id);
-               // $('#delete-form').attr('action', '/{{ route('posts.destroy',$post->id) }}' + post_id );
-                
+               
+                $(".remove-record-model").attr("action",delurl);
             
             },  
             complete: function() {
