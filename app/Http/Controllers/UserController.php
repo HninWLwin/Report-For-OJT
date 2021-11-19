@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\StoreUserRegistrationRequest;
 use App\Http\Requests\StoreUserPasswordChangeRequest;
 use Illuminate\Http\Request;
 use App\Contracts\Services\User\UserServiceInterface;
@@ -62,7 +63,7 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    public function confirm_registration(StoreUserRequest $request)
+    public function confirm_registration(StoreUserRegistrationRequest $request)
     {
         $user = new User($request->all());
         return view('users.confirm_registration', compact('user'));
@@ -74,9 +75,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRegistrationRequest $request)
     {
-        dd($request);
+        //dd($request);
         $this->userInterface->storeUser($request);     
        
         return redirect()->route('showUsers')   
@@ -146,22 +147,10 @@ class UserController extends Controller
 
     public function update_password(StoreUserPasswordChangeRequest $request)
     {
-        dd($request);
         User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
-
-        if (Hash::check($request->password, Auth::user()->password)) { 
-            $user->fill([
-             'password' => Hash::make($request->new_password)
-             ])->save();        
+        
+        return redirect()->route('showUsers')
+            ->with('success', 'Password is successfully updated.');;
          
-            $request->session()->flash('success', 'Password changed');
-             return redirect()->route('showUsers')
-                ->with('success', 'Password Update successfully');;
-         
-         } else {
-             $request->session()->flash('error', 'Password does not match');
-             return redirect()->route('change_password');
-         }
-
     }
 }

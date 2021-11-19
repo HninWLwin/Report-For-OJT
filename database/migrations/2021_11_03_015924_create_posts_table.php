@@ -18,8 +18,10 @@ class CreatePostsTable extends Migration
             $table->string('title'); // varchar(255)
             $table->string('description');
             $table->integer('status')->default('1');
-            $table->foreignId('create_user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('updated_user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('create_user_id');
+            $table->integer('updated_user_id');
+            $table->integer('deleted_user_id')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->timestamps();
         });
     }   

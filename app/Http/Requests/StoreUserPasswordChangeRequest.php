@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\CurrentPassword;
 
 class StoreUserPasswordChangeRequest extends FormRequest
 {
@@ -24,10 +25,19 @@ class StoreUserPasswordChangeRequest extends FormRequest
     public function rules()
     {
         return [
-            'currentPassword' => 'required',
+            'currentPassword' => ['required', new CurrentPassword()],
             'new_password' => 'required|min:8',
-            'newConfirmPassword' => ['same:new_password'],
+            'newConfirmPassword' => ['required', 'same:new_password'],
             
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'currentPassword.required' => "Current Password can't be blank.",
+            'new_password.required' => "New Password can't be blank.",
+            'newConfirmPassword.required' => "New Confirm Password can't be blank.",
         ];
     }
 

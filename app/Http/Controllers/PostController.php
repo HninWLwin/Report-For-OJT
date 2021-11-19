@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\StorePostsImportRequest;
 use Illuminate\Http\Request;
+use App\Exports\PostsExport;
+use App\Imports\PostsImport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Contracts\Services\Post\PostServiceInterface;
 use DB;
+use Datetime;
 
 class PostController extends Controller
 {
@@ -54,11 +59,10 @@ class PostController extends Controller
         return view('posts.create');
     }
 
-    public function post_confirm_registration(StorePostRequest $request)
+    public function postConfirmRegistration(StorePostRequest $request)
     {
-       // dd($request);
         $post = new Post($request->all());
-        return view('posts.post_confirm_registration', compact('post'));
+        return view('posts.register_confirm', compact('post'));
     }
 
     /**
@@ -69,6 +73,7 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
+        dd($request);
         $this->postInterface->storePost($request);     
         
         return redirect()->route('postList')
@@ -107,7 +112,7 @@ class PostController extends Controller
     {
         $post = new Post($request->all());
         $post->status = $request->has('status') ? 1 : 0;
-        //dd($post);
+       
         return view('posts.update_confirm', compact('post'));
     }
 
@@ -121,8 +126,7 @@ class PostController extends Controller
     public function update(StorePostRequest $request, Post $post)
     {
        // dd($request);
-         $this->postInterface->updatePost($request, $post);
-         $post->status = $request->has('status') ? 1 : false;
+        $this->postInterface->updatePost($request, $post);
          
          return redirect()->route('postList')
          ->with('success', 'Post updated successfully.');
@@ -139,5 +143,24 @@ class PostController extends Controller
         $this->postInterface->deletePost($post);
         return redirect()->route('postList')
             ->with('success','Post deleted successfully.!');
+    }
+
+    public function fileImportExport()
+    {
+        return view('posts.upload');
+    }
+
+    public function fileImport(StorePostsImportRequest $request)
+    {
+        Excel::import(new PostsImport, $request->file('file')->store('temp'));
+        dd($request);
+      
+        return redirect()->route('postList')
+            ->with('success', 'Post uploaded successfully.');
+    }
+
+    public function export() 
+    {
+        return Excel::download(new PostsExport, 'posts.csv');
     }
 }

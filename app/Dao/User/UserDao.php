@@ -4,7 +4,9 @@ namespace App\Dao\User;
 
 use App\Contracts\Dao\User\UserDaoInterface;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use DB;
+use DateTime;
 
 class UserDao implements UserDaoInterface
 {
@@ -46,7 +48,17 @@ class UserDao implements UserDaoInterface
    */
   public function storeUser($request)
   {
-      $result = $request->all();
+      $result = $request->all(); 
+
+      $result['password'] = Hash::make(auth()->user()->password);
+      $result['type'] = auth()->user()->type == 'Admin' ? 0 : 1;
+      $user['dob'] = new DateTime(auth()->user()->dob);
+      $result['create_user_id'] = auth()->user()->type;
+      $result['updated_user_id'] = auth()->user()->type;
+      
+      $result['created_at'] = new DateTime();
+      $result['updated_at'] = new DateTime();
+
       $result = User::create($result);
 
       return $result;

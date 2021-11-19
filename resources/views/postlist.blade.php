@@ -26,8 +26,8 @@
                                 </div>
                                 <div class="postOption col-md-4">
                                     <a class="btn btn-success" href="{{ route('posts.create') }}"> Create</a>
-                                    <a class="btn btn-primary" href="/posts/post/uploadIndex"> Upload</a>
-                                    <a class="btn btn-primary" href="/posts/post/download"> Download</a>
+                                    <a class="btn btn-primary" href="{{ route('import') }}"> Upload</a>
+                                    <a class="btn btn-primary" href="{{ route('export') }}"> Download</a>
                                 </div>
                             </div>
 

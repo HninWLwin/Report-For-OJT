@@ -32,8 +32,8 @@ class StorePostRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.required' => 'title is required.',
-            'description.required' => 'description is required',
+            'title.required' => "Title can't be blank.",
+            'description.required' => "Description can't be blank.",
         ];
     }
 }

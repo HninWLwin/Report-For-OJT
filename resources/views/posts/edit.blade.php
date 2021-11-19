@@ -33,7 +33,7 @@
                             <label for="flexSwitchCheckChecked" class="col-md-4 col-form-label text-md-right form-check-label">Status</label>
                             <div class="col-md-6">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" name="status" type="checkbox" id="flexSwitchCheckChecked" {{  ($post->status == 1 ? ' checked' : '') }} />
+                                    <input class="form-check-input" name="status" type="checkbox" id="flexSwitchCheckChecked" value="{{ $post->status }}" {{  ($post->status == 1 ? ' checked' : '') }} />
                                 </div>
                             </div>
                         </div>

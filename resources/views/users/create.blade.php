@@ -15,13 +15,13 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autofocus>
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                @if ($errors->has('name'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('name') }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
@@ -29,13 +29,13 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" >
+                                
+                                @if ($errors->has('email'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('email') }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
@@ -43,13 +43,14 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror " value="{{ old('password') }}" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror  " value="{{ old('password') }}" name="password" >
+                               
+                                @if ($errors->has('password'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('password') }}
+                                    </div>
+                                @endif
+                              
                             </div>
                         </div>
 
@@ -57,7 +58,13 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Password Confirmation*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control " name="password_confirmation" value="{{ old('password_confirmation') }}" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="{{ old('password_confirmation') }}" >
+
+                                @if ($errors->has('password_confirmation'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('password_confirmation') }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
@@ -76,7 +83,7 @@
                             <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="phone" class="form-control " name="phone" value="{{ old('phone') }}" required autocomplete="phone">
+                                <input id="phone" type="phone" class="form-control " name="phone" value="{{ old('phone') }}" >
                             </div>
                         </div>
 
@@ -84,7 +91,7 @@
                             <label for="dob" class="col-md-4 col-form-label text-md-right">{{ __('Date of birth*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="dob" type="date" class="form-control " name="dob" value="{{ old('dob') }}" required autocomplete="dob">
+                                <input id="dob" type="date" class="form-control " name="dob" value="{{ old('dob') }}" >
                             </div>
                         </div>
 
@@ -92,7 +99,7 @@
                             <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="address" type="address" class="form-control " name="address" value="{{ old('address') }}" required autocomplete="address">
+                                <input id="address" type="address" class="form-control " name="address" value="{{ old('address') }}">
                             </div>
                         </div>
 
@@ -100,7 +107,13 @@
                             <label for="profile" class="col-md-4 col-form-label text-md-right">{{ __('Profile*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="profile" type="file" class="form-control" name="profile" value="{{ old('profile') }}" required autocomplete="profile">
+                                <input id="profile" type="file" class="form-control @error('profile') is-invalid @enderror" name="profile" value="{{ old('profile') }}" >
+                                
+                                @if ($errors->has('profile'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('profile') }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
