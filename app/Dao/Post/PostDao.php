@@ -4,6 +4,7 @@ namespace App\Dao\Post;
 
 use App\Contracts\Dao\Post\PostDaoInterface;
 use App\Models\Post;
+use App\Models\User;
 use DB;
 use DateTime;
 
@@ -72,9 +73,10 @@ class PostDao implements PostDaoInterface
      */
     public function updatePost($request, $post)
     {
-        $result['status'] = $request->has('status') ? 1 : false;
-        $result['updated_user_id'] = auth()->user()->id;
-        $result['updated_at'] = new DateTime();
+        $post['status'] = $request->has('status') ? 1 : false;
+
+        $post['updated_user_id'] = auth()->user()->id;
+
         $result = $post->update($request->all());
         
         return $result;

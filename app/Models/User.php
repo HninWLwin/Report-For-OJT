@@ -7,10 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+\Carbon\Carbon::setToStringFormat('Y/m/d');
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'dob'
+    ];
 
     /**
      * The attributes that are mass assignable.

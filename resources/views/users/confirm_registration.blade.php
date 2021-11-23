@@ -15,7 +15,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control " name="name" value="{{ $user->name }}" disabled>
+                                <input id="name" type="text" class="form-control " name="name" value="{{ $user->name }}" readonly>
                             </div>
                         </div>
 
@@ -23,7 +23,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control " name="email" value="{{ $user->email}}" disabled>
+                                <input id="email" type="email" class="form-control " name="email" value="{{ $user->email}}" readonly>
                             </div>
                         </div>
 
@@ -31,7 +31,7 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control " name="password" value="{{ $user->password }}" name="password" disabled>
+                                <input id="password" type="password" class="form-control " name="password" value="{{ $user->password }}" name="password" readonly>
                             </div>
                         </div>
 
@@ -39,7 +39,7 @@
                             <label for="password_confirmation" class="col-md-4 col-form-label text-md-right">{{ __('Password Confirmation*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password_confirmation" type="password_confirmation" class="form-control"  value="{{ $user->password_confirmation }}" disabled>
+                                <input id="password_confirmation" type="password_confirmation" class="form-control"  value="{{ $user->password_confirmation }}" readonly>
                             </div>
                         </div>
 
@@ -47,31 +47,31 @@
                             <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Type*') }}</label>
 
                             <div class="col-md-6">
-                            <input id="type" type="text" class="form-control" name="type" value="{{ $user->type }}" disabled>
+                            <input id="type" type="text" class="form-control" name="type" value="{{ $user->type }}" readonly>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone*') }}</label>
+                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="phone" class="form-control" name="phone" value="{{ $user->phone  }}" disabled>
+                                <input id="phone" type="phone" class="form-control" name="phone" value="{{ $user->phone  }}" readonly>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="dob" class="col-md-4 col-form-label text-md-right">{{ __('Date of birth*') }}</label>
+                            <label for="dob" class="col-md-4 col-form-label text-md-right">{{ __('Date of birth') }}</label>
 
                             <div class="col-md-6">
-                                <input id="dob" type="text" class="form-control" name="dob" value="{{ $user->dob }}" disabled>
+                                <input id="dob" type="text" class="form-control" name="dob" value="{{ $user->dob }}" readonly>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address*') }}</label>
+                            <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="address" type="address" class="form-control"  name="address" value="{{ $user->address }}" disabled>
+                                <input id="address" type="address" class="form-control"  name="address" value="{{ $user->address }}" readonly >
                             </div>
                         </div>
 
@@ -79,7 +79,7 @@
                             <label for="profile" class="col-md-4 col-form-label text-md-right">{{ __('Profile*') }}</label>
 
                             <div class="col-md-6">
-                                <p>{{ $user->profile}} </p>
+                            <input id="profile" type="profile" class="form-control"  name="profile" value="{{ $user->profile }}" readonly>
                             </div>
                         </div>
 

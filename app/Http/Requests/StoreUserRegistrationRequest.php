@@ -24,23 +24,24 @@ class StoreUserRegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed|min:8',
-            'password_confirmation' => ['required', 'same:password'],
-            'type' => 'required',
-            'profile' => 'required',
+             'name' => ['required'],
+             'email' => ['required', 'email', 'unique:users,email'],
+             'password' => ['required' , 'min:8'],
+             'password_confirmation' => ['same:password'],
+              'type' => ['required'],
+              'profile' => ['required'],
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => "Name can't be blank.",
-            'email.required' => "Email can't be blank.",
-            'password.required' => "Password can't be blank.",
-            'password_confirmation.required' => "Password can't be blank.",
-            'profile.required' => "Profile can't be blank.",
+             'name.required' => "Name can't be blank.",
+             'email.required' => "Email can't be blank.",
+             'password.required' => "Password can't be blank.",
+             'password_confirmation.required' => "Password can't be blank.",
+             'type.required' => "Type can't be blank.",
+             'profile.required' => "Profile can't be blank.",
         ];
     }
 }

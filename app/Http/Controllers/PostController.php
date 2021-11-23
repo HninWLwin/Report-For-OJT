@@ -68,7 +68,7 @@ class PostController extends Controller
     public function postConfirmRegistration(StorePostRequest $request)
     {
         $post = new Post($request->all());
-        return view('posts.register_confirm', compact('post'));
+        return view('posts.post_register_confirm', compact('post'));
     }
 
     /**
@@ -79,7 +79,6 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        dd($request);
         $this->postInterface->storePost($request);     
         
         return redirect()->route('postList')
@@ -108,10 +107,9 @@ class PostController extends Controller
         return view('posts.edit', compact('post'));
     }
 
-      /**
+    /**
      * For update confirmation
      *
-     * 
      * 
      */
     public function update_confirm(StorePostRequest $request,  $id)
@@ -119,7 +117,6 @@ class PostController extends Controller
         $post = new Post($request->all());
         $post->id = $id;
         $post->status = $request->has('status') ? 1 : 0;
-       
         return view('posts.update_confirm', compact('post'));
     }
 
@@ -132,12 +129,12 @@ class PostController extends Controller
      */
     public function update(StorePostRequest $request, Post $post)
     {
-        dd($request);
         $this->postInterface->updatePost($request, $post);
          
          return redirect()->route('postList')
          ->with('success', 'Post updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -145,7 +142,7 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy(Post $post) 
     {
         $this->postInterface->deletePost($post);
         return redirect()->route('postList')

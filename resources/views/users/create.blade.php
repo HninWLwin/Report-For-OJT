@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('users.store' ) }}" >
+                    <form method="POST" action="{{ route('confirm_registration') }}" >
                     @csrf
 
                         <div class="form-group row">
@@ -80,7 +80,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone*') }}</label>
+                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
 
                             <div class="col-md-6">
                                 <input id="phone" type="phone" class="form-control " name="phone" value="{{ old('phone') }}" >
@@ -88,7 +88,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="dob" class="col-md-4 col-form-label text-md-right">{{ __('Date of birth*') }}</label>
+                            <label for="dob" class="col-md-4 col-form-label text-md-right">{{ __('Date of birth') }}</label>
 
                             <div class="col-md-6">
                                 <input id="dob" type="date" class="form-control " name="dob" value="{{ old('dob') }}" >
@@ -96,7 +96,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address*') }}</label>
+                            <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address') }}</label>
 
                             <div class="col-md-6">
                                 <input id="address" type="address" class="form-control " name="address" value="{{ old('address') }}">

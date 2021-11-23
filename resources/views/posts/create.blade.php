@@ -9,7 +9,7 @@
                
 
                 <div class="card-body">
-                    <form  method="POST" action="{{ route('register_confirm') }}">
+                    <form  method="POST" action="{{ route('confirm_register') }}">
                         @csrf
                         
                         <div class="form-group row">    

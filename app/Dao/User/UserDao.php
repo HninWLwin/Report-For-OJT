@@ -67,6 +67,8 @@ class UserDao implements UserDaoInterface
 
       $result = User::create($result);
 
+      //dd($result);
+
       return $result;
   }
 

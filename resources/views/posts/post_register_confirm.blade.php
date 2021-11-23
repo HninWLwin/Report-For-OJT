@@ -5,17 +5,17 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Create Post') }}</div>
+                <div class="card-header">{{ __('Register Confirm ') }}</div>
     
                 <div class="card-body">
-                    <form  method="POST" action="{{ route('post.register') }}" enctype="multipart/form-data">
+                    <form  method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
                         @csrf
                        
                         <div class="form-group row">    
                             <label for="title" class="col-md-4 col-form-label text-md-right">{{ __('Title*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="title" type="text" class="form-control " name="title" value="{{ $post->title }}"disabled >
+                                <input id="title" type="text" class="form-control " name="title" value="{{ $post->title }}" readonly>
 
                             </div>
                         </div>
@@ -24,7 +24,7 @@
                             <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="description" type="text" class="form-control " name="description" value="{{ $post->description }}" disabled>
+                                <input id="description" type="text" class="form-control " name="description" value="{{ $post->description }}" readonly>
 
                             </div>
                         </div>
