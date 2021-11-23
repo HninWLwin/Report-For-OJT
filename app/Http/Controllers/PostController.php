@@ -42,9 +42,15 @@ class PostController extends Controller
         ->with('i', (request()->input('page', 1)-1)*5);
     }
 
+    /**
+     * Search data in post table .
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function find(Request $request)
     {
         $posts = $this->postInterface->getSearchData( $request);
+
         return view('postList',['posts' => $posts])
         ->with('i', (request()->input('page', 1)-1)*5);
     }
@@ -108,9 +114,10 @@ class PostController extends Controller
      * 
      * 
      */
-    public function update_confirm(StorePostRequest $request)
+    public function update_confirm(StorePostRequest $request,  $id)
     {
         $post = new Post($request->all());
+        $post->id = $id;
         $post->status = $request->has('status') ? 1 : 0;
        
         return view('posts.update_confirm', compact('post'));
@@ -125,7 +132,7 @@ class PostController extends Controller
      */
     public function update(StorePostRequest $request, Post $post)
     {
-       // dd($request);
+        dd($request);
         $this->postInterface->updatePost($request, $post);
          
          return redirect()->route('postList')
@@ -153,7 +160,6 @@ class PostController extends Controller
     public function fileImport(StorePostsImportRequest $request)
     {
         Excel::import(new PostsImport, $request->file('file')->store('temp'));
-        dd($request);
       
         return redirect()->route('postList')
             ->with('success', 'Post uploaded successfully.');

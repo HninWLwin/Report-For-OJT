@@ -67,7 +67,7 @@
                                             data-updated_at="{{$post->updated_at}}"
                                             data-updated_user_id="{{Auth::user()->name}}"> {{ $post->title }}</a></td>
                                             <td scope="col">{{ $post->description }}</td>
-                                            <td scope="col">{{ $post->create_user_id == 0 ? "Admin" : "User" }}</td>
+                                            <td scope="col">{{ $post->create_user_id }}</td>
                                             <td scope="col">{{ $post->created_at->format('Y/m/d') }}</td>
                                             <td scope="col">
                                                 <form action="{{ route('posts.destroy',$post->id) }}" method="POST">
@@ -80,20 +80,50 @@
                                                     data-description="{{$post->description}}" 
                                                     data-status="{{$post->status}}" data-url="{!! URL::route('posts.destroy', $post->id) !!}">Delete</a></button>
                                                 </form>
+                                                <!-- Modal for Delete Confirmation -->
+                                                <form action="{{ route('posts.destroy',$post->id) }}" method="POST" class="remove-record-model">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                    <div class="modal fade" id="delMediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Confirm</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body" id="delConfBody">
+                                                                
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" name="deleteConfirm_post"  class="btn btn-danger ">Delete</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </td>
                                             </tr>
                                             @endforeach
+                                            
+                                            <!-- Pagination  -->
+                                            <div class="d-flex float-right">
+                                                {!! $posts->Links() !!}
+                                            </div>  
                                         @else
                                             <tr>
-                                                <td colspan="5">No posts to display.</td>
+                                                <td colspan="5">No data available in table.</td>
                                             </tr>   
+                                            
                                         @endif  
+
                                     </tbody>
                                  
                                 </table>
-                                <div class="d-flex float-right">
-                                    {!! $posts->links() !!}
-                                </div>  
+                               
                             </div>
                         </div>
                     </div>     
@@ -125,31 +155,7 @@
     </div>
 </div>
 
-<!-- Modal for Delete Confirmation -->
-<form action="{{ route('posts.destroy',$post->id) }}" method="POST" class="remove-record-model">
-@csrf
-@method('DELETE')
 
-    <div class="modal fade" id="delMediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Confirm</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="delConfBody">
-                   
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="deleteConfirm_post"  class="btn btn-danger ">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">

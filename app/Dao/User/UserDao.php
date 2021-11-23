@@ -17,7 +17,13 @@ class UserDao implements UserDaoInterface
    */
   public function getUserList()
   {
-    $users = User::latest()->paginate(5);  
+    if(auth()->user()->type == 1){
+        $users = User::where('id', auth()->user()->id)->paginate(5);
+    }
+    else{
+        $users = User::latest()->paginate(5);  
+
+    }
 
     return $users;
   }
@@ -53,8 +59,8 @@ class UserDao implements UserDaoInterface
       $result['password'] = Hash::make(auth()->user()->password);
       $result['type'] = auth()->user()->type == 'Admin' ? 0 : 1;
       $user['dob'] = new DateTime(auth()->user()->dob);
-      $result['create_user_id'] = auth()->user()->type;
-      $result['updated_user_id'] = auth()->user()->type;
+      $result['create_user_id'] = auth()->user()->id;
+      $result['updated_user_id'] = auth()->user()->id;
       
       $result['created_at'] = new DateTime();
       $result['updated_at'] = new DateTime();

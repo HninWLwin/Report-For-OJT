@@ -77,7 +77,6 @@ class UserController extends Controller
      */
     public function store(StoreUserRegistrationRequest $request)
     {
-        //dd($request);
         $this->userInterface->storeUser($request);     
        
         return redirect()->route('showUsers')   

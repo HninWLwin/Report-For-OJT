@@ -25,6 +25,16 @@ class StorePostsImportRequest extends FormRequest
     {
         return [
             'file' => 'required|mimes:csv,txt',
+            'title'=> 'required',
+            'description' => 'required',
+            'status' => 'required'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'title' => 'Post upload csv must have 3 columns'
         ];
     }
 

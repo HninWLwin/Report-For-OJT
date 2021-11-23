@@ -3,18 +3,23 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
+ 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    
+    
+    <!-- Bootstrap JS-->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -34,9 +39,9 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                     
-                    <a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
+                    <b><a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
                         Bulletin_Board
-                    </a> &nbsp; &nbsp; &nbsp;
+                    </a></b> &nbsp; &nbsp; &nbsp;
 
                     <a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
                         Posts
@@ -74,9 +79,9 @@
                                 </a>
                                
                                 
-                                <a class="dropdown-item" href="{{ route('profile', Auth::user()->id) }}">Profile</a>
-
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('profile', Auth::user()->id) }}">Profile</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

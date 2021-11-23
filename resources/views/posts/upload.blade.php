@@ -12,7 +12,7 @@
                     <form action="{{ route('file-import') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
-                        @if ($errors->any())
+                        <!-- @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
@@ -20,7 +20,13 @@
                                 @endforeach
                             </ul>
                         </div>
-                        @endif
+                        @endif -->
+
+                        @if ($errors->has('title'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('title') }}
+                                    </div>
+                                @endif
 
                         <div class="form-group row">
                             <label for="customFile" class="col-md-4 col-form-label text-md-right">{{ __('CSV file') }}</label>

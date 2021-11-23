@@ -96,23 +96,50 @@
                                                         data-address="{{ $user->address }}"
                                                         data-url="{!! URL::route('users.destroy', $user->id) !!}">Delete</a>
                                                     </button>
-                                                    
+                                                    <!-- Modal for Delete Confirmation -->
+                                                    <form action="{{ route('users.destroy',$user->id) }}" method="POST" class="remove-record-model">
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                        <div class="modal fade" id="delMediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-lg" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLongTitle">Delete Confirm</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body" id="delConfBody">
+                                                                    
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        <button type="submit" name="deleteConfirm_post"  class="btn btn-danger ">Delete</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             @endforeach
+                                            
+                                            <!-- Pagination  -->
+                                            <div class="d-flex float-right">
+                                                {!! $users->links() !!}
+                                            </div>
+
                                         @else
                                             <tr>
-                                                <td colspan="5">There are no data.</td>
+                                                <td colspan="5">No data available in table.</td>
                                             </tr>   
-
                                             
                                         @endif
                                     </tbody>
                                  
                                 </table>
-                                <div class="d-flex float-right">
-                                    {!! $users->links() !!}
-                                </div>
+                               
                             </div>
                         </div>
                     </div>     
@@ -144,31 +171,7 @@
     </div>
 </div>
 
-<!-- Modal for Delete Confirmation -->
-<form action="{{ route('users.destroy',$user->id) }}" method="POST" class="remove-record-model">
-@csrf
-@method('DELETE')
 
-    <div class="modal fade" id="delMediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Confirm</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="delConfBody">
-                   
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="deleteConfirm_post"  class="btn btn-danger ">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
