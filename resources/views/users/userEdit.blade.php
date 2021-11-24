@@ -6,16 +6,6 @@
         <div class="card-header">
             Profile Edit
         </div>
-        <!-- @if ($errors->any())
-        <div class="alert alert-danger">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif -->
         <div class="card-body">
             <form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -68,14 +58,15 @@
                 <div class="form-group row">
                     <label for="profile" class="col-sm-2 col-form-label">Old Profile</label>
                     <div class="col-sm-6">
-                        <img src="{{ $user->profile }}" alt="old profile" width="250" height="200">
+                    <img src="/images/{{ $user->profile }}" alt="" 
+                        style="width: 200px;height: 200px; padding: 10px; margin: 0px; "/>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="profile" class="col-sm-2 col-form-label">New Profile</label>
                     <div class="col-sm-6">
-                        <input type="file" name="file" class="form-control-file" id="exampleFormControlFile1">
+                        <input type="file" name="profile" class="form-control-file" value="{{ $user->profile }}">
                     </div>
                 </div>
 

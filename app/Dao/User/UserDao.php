@@ -6,6 +6,7 @@ use App\Contracts\Dao\User\UserDaoInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use DB;
+use Illuminate\Support\Facades\Storage;
 use DateTime;
 
 class UserDao implements UserDaoInterface
@@ -54,20 +55,14 @@ class UserDao implements UserDaoInterface
    */
   public function storeUser($request)
   {
-      $result = $request->all(); 
-
       $result['password'] = Hash::make(auth()->user()->password);
       $result['type'] = auth()->user()->type == 'Admin' ? 0 : 1;
       $user['dob'] = new DateTime(auth()->user()->dob);
       $result['create_user_id'] = auth()->user()->id;
       $result['updated_user_id'] = auth()->user()->id;
-      
       $result['created_at'] = new DateTime();
       $result['updated_at'] = new DateTime();
-
       $result = User::create($result);
-
-      //dd($result);
 
       return $result;
   }
@@ -80,6 +75,11 @@ class UserDao implements UserDaoInterface
      */
     public function updateProfile($request, $user)
     {
+        if($request->hasFile('profile')){
+            $filename = $request->profile->getClientOriginalName();
+            $request->profile->storeAs('images',$filename,'public');
+            Auth()->user()->update(['profile'=>$filename]);
+        }
         $result = $user->update($request->all());
 
         return $result;
@@ -94,6 +94,18 @@ class UserDao implements UserDaoInterface
     public function deleteUser($user)
     {
         $result =  $user->delete();
+        
+        return $result;
+    }
+
+     /**
+     * 
+     * Change password 
+     *
+     */
+    public function updatePassword($request)
+    {
+        $result =  User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
         
         return $result;
     }

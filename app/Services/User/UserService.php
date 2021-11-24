@@ -37,11 +37,7 @@ class UserService implements UserServiceInterface
     {
         $result = $this->userDao->getSearchData($request);
 
-        if ($result) {
-            return $result;
-        } else {
-            return false;
-        }
+        return $result;
     }
 
     /**
@@ -53,7 +49,7 @@ class UserService implements UserServiceInterface
     public function storeUser($request)
     {
         $result = $this->userDao->storeUser($request);
-
+        
         if ($result) {
             return $result;
         } else {
@@ -87,6 +83,22 @@ class UserService implements UserServiceInterface
     public function deleteUser($user)
     {
         $result = $this->userDao->deleteUser($user);
+        
+        if ($result) {
+            return $result;
+        } else {
+            return false;
+        }
+    }
+
+     /**
+     * 
+     * Change password
+     *
+     */
+    public function updatePassword($request)
+    {
+        $result = $this->userDao->updatePassword($request);
         
         if ($result) {
             return $result;

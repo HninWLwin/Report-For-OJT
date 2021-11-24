@@ -132,7 +132,7 @@
 
                                         @else
                                             <tr>
-                                                <td colspan="5">No data available in table.</td>
+                                                <td >No data available in table.</td>
                                             </tr>   
                                             
                                         @endif
@@ -174,8 +174,8 @@
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery .dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -232,7 +232,7 @@ $.ajaxSetup({
                 $('#loader').hide();
             },
             error: function(jqXHR, testStatus, error) {
-                console.log(error);
+               // console.log(error);
                 alert("URL " + url + " cannot open. Error:" + error);
                 $('#loader').hide();
             },
@@ -256,7 +256,6 @@ $.ajaxSetup({
         var user_updated_at = $(this).data('updated_at');
         var user_updated_user_id = $(this).data('updated_user_id');
         let url = "{!! route('showUsers') !!}"
-        //let url = $(this).attr('data-attr');
         $.ajax({
             url: url,
             type: 'get',
@@ -292,7 +291,7 @@ $.ajaxSetup({
                 $('#loader').hide();
             },
             error: function(jqXHR, testStatus, error) {
-                console.log(error);
+                //console.log(error);
                 alert("URL " + url + " cannot open. Error:" + error);
                 $('#loader').hide();
             },

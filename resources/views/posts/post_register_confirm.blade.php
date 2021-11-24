@@ -34,7 +34,7 @@
                             <button type="submit" class="btn btn-success" >
                                     {{ __('Confirm') }} 
                             </button>
-                            <a href="{{ url()->previous(), $post->id }}" class="btn btn-secondary">Cancel</a>
+                            <a onclick="window.history.back();" class="btn btn-secondary">Cancel</a>
                             </div>
                         </div>
 
@@ -45,3 +45,14 @@
     </div>
 </div>
 @endsection
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $('a.back').click(function(){
+            parent.history.back();
+            return false;
+        });
+    });
+
+</script>

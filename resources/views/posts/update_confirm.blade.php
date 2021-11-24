@@ -14,7 +14,7 @@
                             <label for="title" class="col-md-4 col-form-label text-md-right">{{ __('Title') }}</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control " name="title" value="{{ $post->title }}"  placeholder="Title">
+                                <input type="text" class="form-control " name="title" value="{{ $post->title }}"  placeholder="Title" readonly>
 
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                             <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
 
                             <div class="col-md-6">
-                                <input id="description" type="text" class="form-control " name="description" value="{{ $post->description }}" placeholder="Description" >
+                                <input id="description" type="text" class="form-control " name="description" value="{{ $post->description }}" placeholder="Description" readonly>
 
                             </div>
                         </div>
@@ -32,7 +32,7 @@
                             <label for="flexSwitchCheckChecked" class="col-md-4 col-form-label text-md-right form-check-label">Status</label>
                             <div class="col-md-6">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" name="status" type="checkbox" id="flexSwitchCheckChecked" value="{{ $post->status }}" {{  ($post->status == 1 ? ' checked' : '') }} />
+                                    <input class="form-check-input" name="status" type="checkbox" readonly id="flexSwitchCheckChecked" value="{{ $post->status }}"  {{ ($post->status == 1 ? ' checked' : '') }} / >
                                 </div>
                             </div>
                         </div>

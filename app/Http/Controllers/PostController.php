@@ -11,6 +11,7 @@ use App\Imports\PostsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Contracts\Services\Post\PostServiceInterface;
 use DB;
+use App\Models\User;
 use Datetime;
 
 class PostController extends Controller
@@ -37,9 +38,46 @@ class PostController extends Controller
     public function index()
     {
         $posts = $this->postInterface->getPostList();
+
+        // $username = DB::table('users')
+        // ->join('posts', 'users.id', '=', 'posts.create_user_id')
+        // ->select('users.name')
+        // ->get();
+
+    
+    //     foreach ($posts as $post){
+   
+    //        $username = $post->user->name;
+    //        dd($username);
+   
+    //    }
+       
+
+        // foreach ($users as $user) {
+        // /* Here should get name to send with view but I get null
+        //  * if I try  $problem->user->name I get Trying to get property 'name' of non-object because user is null 
+        //  */
+        //     dd( $user->name); 
+        // }
+
+      //  dd($username);  
+
+        //return view('postList', compact('username'));
         
-        return view('postList', compact('posts'))
-        ->with('i', (request()->input('page', 1)-1)*5);
+        return view('postList', compact('posts'));
+    }
+
+    public function getNameFromUser()
+    {
+        $username = DB::table('users')
+        ->join('posts', 'users.id', '=', 'posts.create_user_id')
+        ->select('users.name')
+        ->get();
+
+        dd($username);  
+
+        return view('postList', compact('username'));
+
     }
 
     /**
@@ -51,8 +89,7 @@ class PostController extends Controller
     {
         $posts = $this->postInterface->getSearchData( $request);
 
-        return view('postList',['posts' => $posts])
-        ->with('i', (request()->input('page', 1)-1)*5);
+        return view('postList',['posts' => $posts]);
     }
 
     /**
@@ -135,7 +172,6 @@ class PostController extends Controller
          ->with('success', 'Post updated successfully.');
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
@@ -145,15 +181,24 @@ class PostController extends Controller
     public function destroy(Post $post) 
     {
         $this->postInterface->deletePost($post);
+
         return redirect()->route('postList')
             ->with('success','Post deleted successfully.!');
     }
 
+    /**
+     * Show the form for file upload
+     * 
+     */
     public function fileImportExport()
     {
         return view('posts.upload');
     }
 
+    /**
+     * Read uploaded file and store read data into DB
+     * 
+     */
     public function fileImport(StorePostsImportRequest $request)
     {
         Excel::import(new PostsImport, $request->file('file')->store('temp'));
@@ -162,6 +207,10 @@ class PostController extends Controller
             ->with('success', 'Post uploaded successfully.');
     }
 
+    /**
+     * Download post lists  
+     * 
+     */
     public function export() 
     {
         return Excel::download(new PostsExport, 'posts.csv');

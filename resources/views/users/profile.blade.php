@@ -10,7 +10,8 @@
             <div class="row">
                 <div class="col-4">
                     <div class="form-group">
-                        <img src="{{ $user->profile }}" width="200" height="200" />
+                        <img src="/images/{{ $user->profile }}"  alt="" 
+                        style="width: 200px;height: 200px; padding: 10px; margin: 0px; "/>
                     </div>
                 </div>
                 <div class="col-8">

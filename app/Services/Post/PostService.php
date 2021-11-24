@@ -19,7 +19,7 @@ class PostService implements PostServiceInterface
     $this->postDao = $postDao;
   }
 
-  /**
+    /**
      * 
      * Get product data from table
      *
@@ -32,16 +32,16 @@ class PostService implements PostServiceInterface
         return $posts;
     }
 
-    // search data
+
+    /**
+     * Search data 
+     * 
+     */
     public function getSearchData($request)
     {
         $result = $this->postDao->getSearchData($request);
 
-        if ($result) {
-            return $result;
-        } else {
-            return false;
-        }
+        return $result;
     }
 
     /**

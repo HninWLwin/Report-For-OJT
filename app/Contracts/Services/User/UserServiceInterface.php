@@ -32,4 +32,11 @@ interface UserServiceInterface
      * @return object
      */
     public function deleteUser($user);
+
+     /**
+     * 
+     * Change password
+     *
+     */
+    public function updatePassword($request);
 }

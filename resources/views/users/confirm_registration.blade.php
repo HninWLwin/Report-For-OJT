@@ -89,7 +89,7 @@
                             <button type="submit" class="btn btn-primary" >
                                     {{ __('Confirm') }} 
                                 </button>
-                                <a href="{{ url()->previous(), $user->id }}" class="btn btn-secondary">Cancel</a>
+                                <a onclick="window.history.back();" class="btn btn-secondary">Cancel</a>
                             </div>
                         </div>
                     </form>
@@ -99,3 +99,15 @@
     </div>
 </div>
 @endsection
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $('a.back').click(function(){
+            parent.history.back();
+            return false;
+        });
+    });
+
+</script>
+

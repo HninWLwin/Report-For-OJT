@@ -36,8 +36,7 @@ class UserController extends Controller
     {
         $users = $this->userInterface->getUserList();
 
-        return view('users/showUsers', compact('users'))
-        ->with('i', (request()->input('page', 1)-1)*5);
+        return view('users/showUsers', compact('users'));
     }
 
     /**
@@ -49,8 +48,7 @@ class UserController extends Controller
     {
         $users = $this->userInterface->getSearchData( $request);
 
-        return view('users/showUsers',['users' => $users])
-        ->with('i', (request()->input('page', 1)-1)*5);
+        return view('users/showUsers',['users' => $users]);
     }
 
     /**
@@ -66,6 +64,16 @@ class UserController extends Controller
     public function confirm_registration(StoreUserRegistrationRequest $request)
     {
         $user = new User($request->all());
+
+        if ($request->hasFile('profile')) {
+            $profile = $request->file('profile');
+            $filename = time() . '.' . $profile->getClientOriginalExtension();
+            Image::make($profile)->resize(300, 300)->save(storage_path('/uploads/' . $filename));
+            $user->profile = $filename;
+        } 
+
+         dd($user);
+
         return view('users.confirm_registration', compact('user'));
     }
 
@@ -77,7 +85,8 @@ class UserController extends Controller
      */
     public function store(StoreUserRegistrationRequest $request)
     {
-        $this->userInterface->storeUser($request);     
+        
+        $this->userInterface->storeUser($request);
        
         return redirect()->route('showUsers')   
         ->with('success', 'User created successfully.');
@@ -115,7 +124,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $this->userInterface->updateProfile($request, $user);
-         
+        
          return redirect()->route('showUsers')
          ->with('success', 'User Profile successfully updated.');
     }
@@ -134,19 +143,32 @@ class UserController extends Controller
             ->with('success','User deleted successfully.!');
     }
 
+    /**
+     * Show the user's profile.
+     *
+     * 
+     **/
     public function profile(User $user)
     {
         return view('users.profile', compact('user'));
     }
 
+    /**
+     * Show the form to update passsword
+     * 
+     */
     public function change_password(Request $request, User $user)
     {
         return view('users.change_password');
     }
 
+    /**
+     * Update user's password
+     * 
+     */
     public function update_password(StoreUserPasswordChangeRequest $request)
     {
-        User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
+        $this->userInterface->updatePassword($request);    
         
         return redirect()->route('showUsers')
             ->with('success', 'Password is successfully updated.');;
