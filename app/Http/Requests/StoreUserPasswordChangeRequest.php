@@ -25,7 +25,7 @@ class StoreUserPasswordChangeRequest extends FormRequest
     public function rules()
     {
         return [
-            'currentPassword' => ['required', new CurrentPassword()],
+            'currentPassword' => ['required', 'min:8', new CurrentPassword()],
             'new_password' => 'required|min:8',
             'newConfirmPassword' => ['required', 'same:new_password'],
             

@@ -29,22 +29,18 @@ class UserDao implements UserDaoInterface
     return $users;
   }
 
-  public function getSearchData($request)
+  public function searchUserList($name, $email, $start, $end)
   {
-    $users = User::where([
-        [function($query) use ($request) {
-            if(($q = $request->q)) {
-                $query->orWhere('name', 'like', '%'.$q.'%')
-                    ->orWhere('email', 'like', '%'.$q.'%')
-                    ->orWhere('created_at', 'like', '%'.$q.'%')
-                    ->orWhere('updated_at', 'like', '%'.$q.'%')->get();
-            }
-        }]
-    ])
-        ->orderBy("id")
-        ->paginate(5);
-        
-    return $users;
+    $user = User::where(function ($users) use ($name, $email, $start, $end) {
+        $users->where('name', 'LIKE', '%' . $name . '%')
+            ->where('email', 'LIKE', '%' . $email . '%')->get();
+        if ($start != null or $start != "") $users->where('created_at', '>=', $start)->get();
+        if ($end != null or $end != "") $users->where('created_at', '<=', $end)->get();
+    })
+    ->orderBy("id")
+    ->paginate(5);
+
+    return $user;
 
   }
 
@@ -53,16 +49,10 @@ class UserDao implements UserDaoInterface
    * 
    * @return object
    */
-  public function storeUser($request)
+  public function storeUser($user)
   {
-      $result['password'] = Hash::make(auth()->user()->password);
-      $result['type'] = auth()->user()->type == 'Admin' ? 0 : 1;
-      $user['dob'] = new DateTime(auth()->user()->dob);
-      $result['create_user_id'] = auth()->user()->id;
-      $result['updated_user_id'] = auth()->user()->id;
-      $result['created_at'] = new DateTime();
-      $result['updated_at'] = new DateTime();
-      $result = User::create($result);
+      dd($user);
+      $result = User::create($user);
 
       return $result;
   }
@@ -73,14 +63,18 @@ class UserDao implements UserDaoInterface
      *
      * @return object
      */
-    public function updateProfile($request, $user)
+    public function updateProfile($user)
     {
-        if($request->hasFile('profile')){
-            $filename = $request->profile->getClientOriginalName();
-            $request->profile->storeAs('images',$filename,'public');
-            Auth()->user()->update(['profile'=>$filename]);
-        }
-        $result = $user->update($request->all());
+      //dd($user->id);
+        $result = User::where('id', $user->id)->update([
+            'name' => $user['name'],
+            'email' => $user['email'],
+            'type' => $user['type'],
+            'phone' => $user['phone'],
+            'address' => $user['address'],
+            'dob' => $user['dob'],
+            'profile' => $user['profile'],
+        ]);
 
         return $result;
     }

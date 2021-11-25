@@ -56,11 +56,7 @@ class PostDao implements PostDaoInterface
       $result['create_user_id'] = auth()->user()->id;
       $result['updated_user_id'] = auth()->user()->id;
       
-      $result['created_at'] = new DateTime();
-      $result['updated_at'] = new DateTime();
-      
       $result = Post::create($result);
-      //dd($result);
 
       return $result;
   }

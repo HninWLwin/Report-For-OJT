@@ -10,22 +10,17 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
  
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet"/>
 </head>
 <body>
     <div id="app">
@@ -42,61 +37,48 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                     
-                    <b><a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
-                        Bulletin_Board
-                    </a></b> &nbsp; &nbsp; &nbsp;
+                        <b><a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
+                            Bulletin_Board
+                        </a></b> &nbsp; &nbsp; &nbsp;
 
-                    <a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
-                        Posts
-                    </a> &nbsp; &nbsp; &nbsp;
+                        <a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
+                            Posts
+                        </a> &nbsp; &nbsp; &nbsp;
 
-                    <a href="{{ route('showUsers') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
-                        Users
-                    </a> 
-
-
+                        <a href="{{ route('showUsers') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
+                            Users
+                        </a> 
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                        <!-- <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif -->
 
                         @else   
-                            <a href="{{ route('users.create') }}"  >
+                        <li class="nav-item navbar-nav dropdown d-flex">
+                            <a class="nav-link" href="{{ route('users.create') }}"  >
                                 Create User
                             </a>  &nbsp; &nbsp; &nbsp;
 
-                            <li class="nav-item dropdown">
-
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
-                                </a>
-                               
-                                
-                                
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('profile', Auth::user()->id) }}">Profile</a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                            </a>
+
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ route('profile', Auth::user()->id) }}">Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
-                                    </a>
+                                    </a></li>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
-                                </div>
-                               
-                            </li>
+                                </li>
+                            </ul>
+                        </li>
                         @endguest
                     </ul>
                 </div>
@@ -105,6 +87,7 @@
 
         <main class="py-4">
             @yield('content')
+            @yield('javascript')
         </main>
     </div>
 </body>

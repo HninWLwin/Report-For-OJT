@@ -4,6 +4,9 @@ namespace App\Services\User;
 
 use App\Contracts\Dao\User\UserDaoInterface;
 use App\Contracts\Services\User\UserServiceInterface;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
+use DateTime;
 
 class UserService implements UserServiceInterface
 {
@@ -32,10 +35,14 @@ class UserService implements UserServiceInterface
         return $users;
     }
 
-    // search data
-    public function getSearchData($request)
+    /**
+     * Search users
+     * 
+     * @param name,email,start,end
+     */
+    public function searchUserList($name, $email, $start, $end)
     {
-        $result = $this->userDao->getSearchData($request);
+        $result = $this->userDao->searchUserList($name, $email, $start, $end);
 
         return $result;
     }
@@ -46,15 +53,16 @@ class UserService implements UserServiceInterface
      *
      * @return object
      */
-    public function storeUser($request)
+    public function storeUser($user)
     {
-        $result = $this->userDao->storeUser($request);
+        $user->password = Hash::make($user->password);
+        $user->type = $user->type == 'Admin' ? 0 : 1;
+        $user->dob = new DateTime($user()->dob);
+        $user->create_user_id = $user->id;
+        $user->updated_user_id = $user>id;
+        $result = $this->userDao->storeUser($user);
         
-        if ($result) {
-            return $result;
-        } else {
-            return false;
-        }
+        return $result;
     }
 
     /**
@@ -63,15 +71,14 @@ class UserService implements UserServiceInterface
      *
      * @return object
      */
-    public function updateProfile($request, $user)
+    public function updateProfile($user)
     {
-        $result = $this->userDao->updateProfile($request, $user);
+        $user->updated_user_id = auth()->user()->id;
+        //dd ($user);
         
-        if ($result) {
-            return $result;
-        } else {
-            return false;
-        }
+        $result = $this->userDao->updateProfile($user);
+        
+        return $result;
     }
 
     /**
@@ -84,11 +91,7 @@ class UserService implements UserServiceInterface
     {
         $result = $this->userDao->deleteUser($user);
         
-        if ($result) {
-            return $result;
-        } else {
-            return false;
-        }
+        return $result;
     }
 
      /**
@@ -100,10 +103,6 @@ class UserService implements UserServiceInterface
     {
         $result = $this->userDao->updatePassword($request);
         
-        if ($result) {
-            return $result;
-        } else {
-            return false;
-        }
+        return $result;
     }
 }

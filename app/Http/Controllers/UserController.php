@@ -11,6 +11,8 @@ use App\Contracts\Services\User\UserServiceInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
+
 
 class UserController extends Controller
 {
@@ -46,7 +48,14 @@ class UserController extends Controller
      */
     public function find(Request $request)
     {
-        $users = $this->userInterface->getSearchData( $request);
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $start = $request->input('start');
+        $end = $request->input('end');
+        if($end != null && $end != "" && $start > $end){
+            return redirect()->route('showUsers')->with('error', 'Start date is greater than End date');
+        }
+        $users = $this->userInterface->searchUserList($name, $email, $start, $end);
 
         return view('users/showUsers',['users' => $users]);
     }
@@ -66,13 +75,10 @@ class UserController extends Controller
         $user = new User($request->all());
 
         if ($request->hasFile('profile')) {
-            $profile = $request->file('profile');
-            $filename = time() . '.' . $profile->getClientOriginalExtension();
-            Image::make($profile)->resize(300, 300)->save(storage_path('/uploads/' . $filename));
+            $filename = $request->profile->getClientOriginalName();
+            $path = $request->profile->storeAs('images', $filename, 'public');
             $user->profile = $filename;
-        } 
-
-         dd($user);
+        }
 
         return view('users.confirm_registration', compact('user'));
     }
@@ -85,11 +91,11 @@ class UserController extends Controller
      */
     public function store(StoreUserRegistrationRequest $request)
     {
-        
-        $this->userInterface->storeUser($request);
-       
-        return redirect()->route('showUsers')   
-        ->with('success', 'User created successfully.');
+        $user = new User($request->all());
+        $this->userInterface->storeUser($user);
+    
+        return redirect()->route('showUsers')
+                ->with('success', 'User created successfully.');
     }
 
     /**
@@ -123,10 +129,22 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $this->userInterface->updateProfile($request, $user);
-        
-         return redirect()->route('showUsers')
-         ->with('success', 'User Profile successfully updated.');
+        $user = new User($request->all());
+        if ($request->hasFile('profile')) {
+            $filename = $request->profile->getClientOriginalName();
+            $path = $request->profile->storeAs('images', $filename, 'public');
+            $user->profile = $filename;
+           
+        }
+        $editedUser = $this->userInterface->updateProfile($user);
+
+        if ($editedUser == 1) {
+            return redirect()->route('showUsers')
+                ->with('success', 'User Profile successfully updated.');
+        } else {
+            return redirect()->route('showUsers')
+                ->with('error', 'User profile not updated.');
+        }
     }
 
     /**
@@ -157,7 +175,7 @@ class UserController extends Controller
      * Show the form to update passsword
      * 
      */
-    public function change_password(Request $request, User $user)
+    public function change_password()
     {
         return view('users.change_password');
     }

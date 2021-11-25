@@ -10,10 +10,7 @@ interface UserDaoInterface
      *
      * @return array
      */
-  public function getUserList();
-
-   // search data
-   public function getSearchData($request);
+   public function getUserList();
 
   /**
      * 
@@ -21,7 +18,7 @@ interface UserDaoInterface
      *
      * @return object
      */
-    public function storeUser($request);
+    public function storeUser($user);
 
     /**
      * 
@@ -29,7 +26,7 @@ interface UserDaoInterface
      *
      * @return object
      */
-    public function updateProfile($request, $user);
+    public function updateProfile($user);
 
     /**
      * 
@@ -45,4 +42,12 @@ interface UserDaoInterface
      *
      */
     public function updatePassword($request);
+
+     /**
+     * Search users
+     * 
+     * @param name,email,start,end
+     * 
+     */
+    public function searchUserList($name, $email,$start, $end);
 }

@@ -13,20 +13,19 @@
                             <div class="table-wrapper">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form action="{{ route('search_user') }}" method="GET" role="q">
+                                    <form action="{{ route('search_user') }}" method="GET" >
                                     @csrf
                                         <div class="row"> 
                                             <div class="searchItem">Name</div>   
-                                            <div class="searchItem col"><input type="text" name="q" class="form-control" placeholder=""></div>
+                                            <div class="searchItem col"><input type="text" name="name" class="form-control" placeholder=""></div>
                                             <div class="searchItem">Email</div>   
-                                            <div class="searchItem col"><input type="email" name="q" class="form-control" placeholder=""></div>
+                                            <div class="searchItem col"><input type="email" name="email" class="form-control" placeholder=""></div>
                                             <div class="searchItem">From</div>   
-                                            <div class="searchItem col"><input type="date" name="q" class="form-control " placeholder=""></div>
+                                            <div class="searchItem col"><input type="text" name="start" class="form-control " placeholder=""></div>
                                             <div class="searchItem">To</div>   
-                                            <div class="searchItem col"><input type="date" name="q" class="form-control " placeholder=""></div>
-                                            <a href="{{ route('search_user') }}" class=" mt-1">
-                                                <div class="searchItem"><button type="submit" class="btn btn-primary">Search</button></div>
-                                            </a>
+                                            <div class="searchItem col"><input type="text" name="end" class="form-control " placeholder=""></div>
+                                            <div class="searchItem"><button type="submit" class="btn btn-primary">Search</button></div>
+                                           
                                         </div>
                                     </form>
                                 </div> 
@@ -132,7 +131,7 @@
 
                                         @else
                                             <tr>
-                                                <td >No data available in table.</td>
+                                                <td colspan="5">No data available in table.</td>
                                             </tr>   
                                             
                                         @endif

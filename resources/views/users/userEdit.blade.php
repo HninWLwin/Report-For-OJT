@@ -58,7 +58,7 @@
                 <div class="form-group row">
                     <label for="profile" class="col-sm-2 col-form-label">Old Profile</label>
                     <div class="col-sm-6">
-                    <img src="/images/{{ $user->profile }}" alt="" 
+                    <img src="/storage/images/{{ Auth::user()->profile }}" alt="" 
                         style="width: 200px;height: 200px; padding: 10px; margin: 0px; "/>
                     </div>
                 </div>
@@ -70,7 +70,8 @@
                     </div>
                 </div>
 
-                <input type="hidden" value="{{ $user->profile }}" name="profile">
+                <input type="hidden" value="{{ $user->profile }}" name="profile" id="id">
+                <input type="hidden" value="{{ $user->id }}" name = "id" id="id" >
                 <div class="form-group row">
                     <div class="col-xs-6 col-sm-6 col-md-6 text-center">
                         <button type="submit" class="btn btn-primary">Edit</button>
@@ -83,3 +84,15 @@
     </div>
 </div>
 @endsection
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
