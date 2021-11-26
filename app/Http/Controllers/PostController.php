@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\StorePostsImportRequest;
+use App\Http\Requests\FileUploadRequest;
 use Illuminate\Http\Request;
 use App\Exports\PostsExport;
 use App\Imports\PostsImport;
@@ -149,7 +149,7 @@ class PostController extends Controller
      *
      * 
      */
-    public function update_confirm(StorePostRequest $request,  $id)
+    public function update_confirm(Request $request,  $id)
     {
         $post = new Post($request->all());
         $post->id = $id;
@@ -164,7 +164,7 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(StorePostRequest $request, Post $post)
+    public function update(Request $request, Post $post)
     {
         $this->postInterface->updatePost($request, $post);
          
@@ -199,7 +199,7 @@ class PostController extends Controller
      * Read uploaded file and store read data into DB
      * 
      */
-    public function fileImport(StorePostsImportRequest $request)
+    public function fileImport(FileUploadRequest $request)
     {
         Excel::import(new PostsImport, $request->file('file')->store('temp'));
       

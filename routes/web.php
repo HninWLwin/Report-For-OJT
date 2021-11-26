@@ -42,6 +42,7 @@ Route::get('/userlist', 'UserController@index')->name('showUsers');
 Route::get('/search-user','UserController@find')->name('search_user');
 
 Route::post('users/confirm_registration','UserController@confirm_registration')->name('confirm_registration');
+//Route::post('users/{user}','UserController@update')->name('user.update');
 
 Route::get('users/{user}/profile','UserController@profile')->name('profile');      
 Route::get('users/{user}/change_password','UserController@change_password')->name('change_password');  

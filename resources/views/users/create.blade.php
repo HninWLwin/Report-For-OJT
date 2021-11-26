@@ -6,6 +6,16 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('confirm_registration') }}" >
@@ -107,7 +117,7 @@
                             <label for="profile" class="col-md-4 col-form-label text-md-right">{{ __('Profile*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="profile" type="file" class="form-control @error('profile') is-invalid @enderror" name="profile" value="{{ old('profile') }}" >
+                                <input id="exampleFormControlFile1" type="file" class="form-control @error('profile') is-invalid @enderror" name="profile" value="{{ old('profile') }}" >
                                 
                                 @if ($errors->has('profile'))
                                     <div class="invalid-feedback">

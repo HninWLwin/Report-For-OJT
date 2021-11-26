@@ -79,11 +79,12 @@
                             <label for="profile" class="col-md-4 col-form-label text-md-right">{{ __('Profile*') }}</label>
 
                             <div class="col-md-6">
-                            <input id="profile" type="profile" class="form-control"  name="profile" value="{{ $user->profile }}" readonly>
+                                <img src="/storage/images/{{ $user->profile }}" alt="" 
+                            style="width: 200px;height: 200px; padding: 10px; margin: 0px; "/>
                             </div>
                         </div>
 
-
+                        <input type="hidden" value="{{ $user->profile }}" name="profile" >
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                             <button type="submit" class="btn btn-primary" >

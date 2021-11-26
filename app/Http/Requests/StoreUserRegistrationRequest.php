@@ -28,11 +28,16 @@ class StoreUserRegistrationRequest extends FormRequest
              'email' => ['required', 'email', 'unique:users,email'],
              'password' => ['required' , 'min:8'],
              'password_confirmation' => ['same:password'],
-              'type' => ['required'],
-              'profile' => 'required',
+             'type' => ['required'],
+             'profile' => ['required', 'image', 'mimes:jpg,bmp,png,jpeg'],
         ];
     }
 
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [

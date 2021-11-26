@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\StoreUserRegistrationRequest;
-use App\Http\Requests\StoreUserPasswordChangeRequest;
+use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use App\Contracts\Services\User\UserServiceInterface;
 use Illuminate\Support\Facades\Auth;
@@ -72,14 +73,13 @@ class UserController extends Controller
 
     public function confirm_registration(StoreUserRegistrationRequest $request)
     {
+        dd($request);
         $user = new User($request->all());
-
         if ($request->hasFile('profile')) {
             $filename = $request->profile->getClientOriginalName();
             $path = $request->profile->storeAs('images', $filename, 'public');
             $user->profile = $filename;
         }
-
         return view('users.confirm_registration', compact('user'));
     }
 
@@ -92,10 +92,15 @@ class UserController extends Controller
     public function store(StoreUserRegistrationRequest $request)
     {
         $user = new User($request->all());
-        $this->userInterface->storeUser($user);
-    
-        return redirect()->route('showUsers')
+        $createUser = $this->userInterface->storeUser($user);
+        if($createUser){
+            return redirect()->route('showUsers')
                 ->with('success', 'User created successfully.');
+        }else {
+            return redirect()->route('users/showUsers')
+                ->with('error', 'User not created.');
+        }
+    
     }
 
     /**
@@ -127,15 +132,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $user = new User($request->all());
         if ($request->hasFile('profile')) {
             $filename = $request->profile->getClientOriginalName();
             $path = $request->profile->storeAs('images', $filename, 'public');
             $user->profile = $filename;
-           
+            
         }
+        $user->id = $request->user->id;
         $editedUser = $this->userInterface->updateProfile($user);
 
         if ($editedUser == 1) {
@@ -184,7 +190,7 @@ class UserController extends Controller
      * Update user's password
      * 
      */
-    public function update_password(StoreUserPasswordChangeRequest $request)
+    public function update_password(ChangePasswordRequest $request)
     {
         $this->userInterface->updatePassword($request);    
         

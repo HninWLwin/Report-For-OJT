@@ -51,8 +51,19 @@ class UserDao implements UserDaoInterface
    */
   public function storeUser($user)
   {
-      dd($user);
-      $result = User::create($user);
+    //   dd($user);
+      $result = User::create([
+        'name' => $user['name'],
+        'email' => $user['email'],
+        'password' => $user['password'],
+        'profile' => $user['profile'],
+        'type' => $user['type'],
+        'phone' => $user['phone'],
+        'address' => $user['address'],
+        'dob' => $user['dob'],
+        'create_user_id' => $user['create_user_id'],
+        'updated_user_id' => $user['updated_user_id'],
+    ]);
 
       return $result;
   }
@@ -65,15 +76,14 @@ class UserDao implements UserDaoInterface
      */
     public function updateProfile($user)
     {
-      //dd($user->id);
         $result = User::where('id', $user->id)->update([
-            'name' => $user['name'],
-            'email' => $user['email'],
-            'type' => $user['type'],
-            'phone' => $user['phone'],
-            'address' => $user['address'],
-            'dob' => $user['dob'],
-            'profile' => $user['profile'],
+                'name' => $user['name'],
+                'email' => $user['email'],
+                'type' => $user['type'],
+                'phone' => $user['phone'],
+                'address' => $user['address'],
+                'dob' => $user['dob'],
+                'profile' => $user['profile'],
         ]);
 
         return $result;

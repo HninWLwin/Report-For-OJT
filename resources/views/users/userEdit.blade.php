@@ -4,8 +4,18 @@
 <div class="py-4 container">
     <div class="card">
         <div class="card-header">
-            Profile Edit
+            Profile Edit {{ $user->id }}
         </div>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="card-body">
             <form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -71,7 +81,7 @@
                 </div>
 
                 <input type="hidden" value="{{ $user->profile }}" name="profile" id="id">
-                <input type="hidden" value="{{ $user->id }}" name = "id" id="id" >
+                <input type="hidden" value="{{ $user->id }}" name ="id" id="id" >
                 <div class="form-group row">
                     <div class="col-xs-6 col-sm-6 col-md-6 text-center">
                         <button type="submit" class="btn btn-primary">Edit</button>

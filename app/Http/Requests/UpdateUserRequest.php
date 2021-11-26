@@ -24,21 +24,17 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         
-            return [
-                'profile' => ['image', 'mimes:jpg,bmp,png,jpeg']
-            ];
+        $rules = [
+            'name' => ['required'],
+             'email' => ['required', ],
+             'type' => ['required'],
+        ];
+        if(request()->hasFile('profile')){
+            $rules +=['profile' => ['required', 'image', 'mimes:jpg,bmp,png,jpeg']];
+        }
+        return $rules;
         
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'phone.regex' => 'Phone no starting with 0 and following 10 digits'
-        ];
-    }
+    
 }
