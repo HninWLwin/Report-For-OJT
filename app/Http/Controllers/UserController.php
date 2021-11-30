@@ -91,14 +91,10 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = new User($request->all());
-        $createUser = $this->userInterface->storeUser($user);
-        if($createUser){
-            return redirect()->route('showUsers')
-                ->with('success', 'User created successfully.');
-        }else {
-            return redirect()->route('users/showUsers')
-                ->with('error', 'User not created.');
-        }
+        $this->userInterface->storeUser($user);
+       
+        return redirect()->route('showUsers')
+            ->with('success', 'User created successfully.');
     
     }
 
@@ -138,18 +134,12 @@ class UserController extends Controller
             $filename = $request->profile->getClientOriginalName();
             $path = $request->profile->storeAs('images', $filename, 'public');
             $user->profile = $filename;
-            
         }
         $user->id = $request->user->id;
-        $editedUser = $this->userInterface->updateProfile($user);
+        $this->userInterface->updateProfile($user);
 
-        if ($editedUser == 1) {
-            return redirect()->route('showUsers')
-                ->with('success', 'User Profile successfully updated.');
-        } else {
-            return redirect()->route('showUsers')
-                ->with('error', 'User profile not updated.');
-        }
+        return redirect()->route('showUsers')
+            ->with('success', 'User Profile successfully updated.');
     }
 
     /**
@@ -160,15 +150,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $deleted = $this->userInterface->deleteUser($user);
-        if($deleted == 1) {
-            return redirect()->route('showUsers')
-                ->with('success','User deleted successfully.!');
-        } else {
-            return redirect()->route('showUsers')
-                ->with('error','User not deleted !');
-        }
+        $this->userInterface->deleteUser($user);
 
+        return redirect()->route('showUsers')
+            ->with('success','User deleted successfully.!');
     }
 
     /**

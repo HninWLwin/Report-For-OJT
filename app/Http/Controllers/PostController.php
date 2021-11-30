@@ -92,6 +92,7 @@ class PostController extends Controller
     public function postConfirmRegistration(StorePostRequest $request)
     {
         $post = new Post($request->all());
+
         return view('posts.post_register_confirm', compact('post'));
     }
 
@@ -103,15 +104,11 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $createPost = $this->postInterface->storePost($request);  
-        if($createPost) {
-            return redirect()->route('postList')
-            ->with('success', 'Post created successfully.');
-        } else {
-            return redirect()->route('postList')
-                ->with('error', 'Post not created.');
-        }
-        
+        $post = new Post($request->all());
+        $this->postInterface->storePost($post);  
+       
+        return redirect()->route('postList')
+                ->with('success', 'Post created successfully.');
     }
 
     /**
@@ -158,14 +155,10 @@ class PostController extends Controller
      */
     public function update(StorePostRequest $request, Post $post)
     {
-        $updated = $this->postInterface->updatePost($request, $post);
-        if($updated == 1) {
-            return redirect()->route('postList')
+        $this->postInterface->updatePost($request, $post);
+        
+        return redirect()->route('postList')
             ->with('success', 'Post updated successfully.');
-        } else {
-            return redirect()->route('postList')
-                ->with('error', 'Post not updated.');
-        }
     }
 
     /**
@@ -176,15 +169,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post) 
     {
-        $deleted = $this->postInterface->deletePost($post);
-        if($deleted == 1) {
-            return redirect()->route('postList')
-                ->with('success','Post deleted successfully.!');
-        } else {
-            return redirect()->route('postList')
-                ->with('error','Post not deleted !');
-        }
+        $this->postInterface->deletePost($post);
 
+        return redirect()->route('postList')
+            ->with('success','Post deleted successfully.!');
     }
 
     /**

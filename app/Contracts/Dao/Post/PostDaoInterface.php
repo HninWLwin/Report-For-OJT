@@ -21,7 +21,7 @@ interface PostDaoInterface
      *
      * @return object
      */
-    public function storePost($request);
+    public function storePost($post);
 
     /**
      * 
@@ -29,7 +29,7 @@ interface PostDaoInterface
      *
      * @return object
      */
-    public function updatePost($request, $post);
+    public function updatePost($post);
 
     /**
      * 

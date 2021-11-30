@@ -5,7 +5,7 @@ namespace App\Dao\Post;
 use App\Contracts\Dao\Post\PostDaoInterface;
 use App\Models\Post;
 use App\Models\User;
-use DB;
+use Illuminate\Support\Facades\DB;
 use DateTime;
 
 class PostDao implements PostDaoInterface
@@ -49,16 +49,17 @@ class PostDao implements PostDaoInterface
    * 
    * @return object
    */
-  public function storePost($request)
-  {
-      $result = $request->all();
-      
-      $result['create_user_id'] = auth()->user()->id;
-      $result['updated_user_id'] = auth()->user()->id;
-      
-      $result = Post::create($result);
-
-      return $result;
+  public function storePost($post)
+  {  
+    DB::transaction(function()use ($post){
+        try {
+            $result = Post::create($post);
+        } catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+        
+        return $result;
+    });
   }
 
   /**
@@ -67,15 +68,17 @@ class PostDao implements PostDaoInterface
      *
      * @return object
      */
-    public function updatePost($request, $post)
+    public function updatePost($post)
     {
-        $post['status'] = $request->has('status') ? 1 : false;
-
-        $post['updated_user_id'] = auth()->user()->id;
-
-        $result = $post->update($request->all());
+        DB::transaction(function()use ($post){
+            try {
+                $result = Post::where('id', $post['id'])->update($post);
+            } catch (\Exception $e) {
+                return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            }
         
-        return $result;
+            return $result;
+        });
     }
 
     /**
@@ -86,9 +89,15 @@ class PostDao implements PostDaoInterface
      */
     public function deletePost($post)
     {
-        $result =  POST::where('id', $post['id'])->update($post);
+        DB::transaction(function()use ($post){
+            try {
+                $result =  POST::where('id', $post['id'])->update($post);
+            } catch (\Exception $e) {
+                return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            }
         
-        return $result;
+            return $result;
+        });
     }
 
 }

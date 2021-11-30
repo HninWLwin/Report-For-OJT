@@ -51,20 +51,26 @@ class UserDao implements UserDaoInterface
    */
   public function storeUser($user)
   {
-      $result = User::create([
-        'name' => $user['name'],
-        'email' => $user['email'],
-        'password' => $user['password'],
-        'profile' => $user['profile'],
-        'type' => $user['type'],
-        'phone' => $user['phone'],
-        'address' => $user['address'],
-        'dob' => $user['dob'],
-        'create_user_id' => $user['create_user_id'],
-        'updated_user_id' => $user['updated_user_id'],
-    ]);
+    DB::transaction(function()use ($user){
+        try {
+          $result = User::create([
+            'name' => $user['name'],
+            'email' => $user['email'],
+            'password' => $user['password'],
+            'profile' => $user['profile'],
+            'type' => $user['type'],
+            'phone' => $user['phone'],
+            'address' => $user['address'],
+            'dob' => $user['dob'],
+            'create_user_id' => $user['create_user_id'],
+            'updated_user_id' => $user['updated_user_id'],
+        ]);
+        } catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
 
-      return $result;
+        return $result;
+    });
   }
 
   /**
@@ -75,17 +81,25 @@ class UserDao implements UserDaoInterface
      */
     public function updateProfile($user)
     {
-        $result = User::where('id', $user->id)->update([
-                'name' => $user['name'],
-                'email' => $user['email'],
-                'type' => $user['type'],
-                'phone' => $user['phone'],
-                'address' => $user['address'],
-                'dob' => $user['dob'],
-                'profile' => $user['profile'],
-        ]);
+      DB::transaction(function()use ($user){
+        try {
+          $result = User::where('id', $user->id)->update([
+                  'name' => $user['name'],
+                  'email' => $user['email'],
+                  'type' => $user['type'],
+                  'phone' => $user['phone'],
+                  'address' => $user['address'],
+                  'dob' => $user['dob'],
+                  'profile' => $user['profile'],
+          ]);
+        } catch (\Exception $e){
+          return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+      }
+      
+      return $result;
+    });
+      
 
-        return $result;
     }
 
     /**
@@ -96,9 +110,14 @@ class UserDao implements UserDaoInterface
      */
     public function deleteUser($user)
     {
-        $result =  User::where('id', $user['id'])->update($user);
-        
+      DB::transaction(function()use ($user){
+        try {
+          $result =  User::where('id', $user['id'])->update($user);
+        } catch (\Exception $e){
+          return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
         return $result;
+      });
     }
 
      /**

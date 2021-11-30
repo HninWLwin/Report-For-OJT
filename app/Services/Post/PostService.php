@@ -50,9 +50,12 @@ class PostService implements PostServiceInterface
      *
      * @return object
      */
-    public function storePost($request)
+    public function storePost($post)
     {
-        $result = $this->postDao->storePost($request);
+        $post = $post->toArray();
+        $post['create_user_id'] = auth()->user()->id;
+        $post['updated_user_id'] = auth()->user()->id;
+        $result = $this->postDao->storePost($post);
 
         return $result;
     }
@@ -63,9 +66,17 @@ class PostService implements PostServiceInterface
      *
      * @return object
      */
-    public function updatePost($request, $post)
+    public function updatePost($post)
     {
-        $result = $this->postDao->updatePost($request, $post);
+        $post = [
+            'id' => $post['id'],
+            'title' => $post['title'],
+            'description' => $post['description'],
+            'status' => $post['status'],
+            'updated_user_id' => auth()->user()->id,
+            'updated_at' => now()
+        ];
+        $result = $this->postDao->updatePost($post);
         
         return $result;
     }

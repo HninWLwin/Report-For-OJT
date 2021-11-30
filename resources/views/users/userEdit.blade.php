@@ -4,7 +4,7 @@
 <div class="py-4 container">
     <div class="card">
         <div class="card-header">
-            Profile Edit {{ $user->id }}
+            Profile Edit 
         </div>
         @if ($errors->any())
         <div class="alert alert-danger">
@@ -22,13 +22,13 @@
                 @method('PUT')
                 
                 <div class="form-group row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Name*</label>
                     <div class="col-sm-6">
                         <input type="text" name="name" class="form-control" value="{{ $user->name }}">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="Email" class="col-sm-2 col-form-label">Email</label>
+                    <label for="Email" class="col-sm-2 col-form-label">E-mail Address*</label>
                     <div class="col-sm-6">
                         <input type="text" name="email" class="form-control" value="{{ $user->email }}">
                     </div>
