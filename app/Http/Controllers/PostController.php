@@ -67,19 +67,6 @@ class PostController extends Controller
         return view('postList', compact('posts'));
     }
 
-    public function getNameFromUser()
-    {
-        $username = DB::table('users')
-        ->join('posts', 'users.id', '=', 'posts.create_user_id')
-        ->select('users.name')
-        ->get();
-
-        dd($username);  
-
-        return view('postList', compact('username'));
-
-    }
-
     /**
      * Search data in post table .
      *
@@ -116,10 +103,15 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $this->postInterface->storePost($request);     
+        $createPost = $this->postInterface->storePost($request);  
+        if($createPost) {
+            return redirect()->route('postList')
+            ->with('success', 'Post created successfully.');
+        } else {
+            return redirect()->route('postList')
+                ->with('error', 'Post not created.');
+        }
         
-        return redirect()->route('postList')
-        ->with('success', 'Post created successfully.');
     }
 
     /**
@@ -149,7 +141,7 @@ class PostController extends Controller
      *
      * 
      */
-    public function update_confirm(Request $request,  $id)
+    public function update_confirm(StorePostRequest $request,  $id)
     {
         $post = new Post($request->all());
         $post->id = $id;
@@ -164,12 +156,16 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(StorePostRequest $request, Post $post)
     {
-        $this->postInterface->updatePost($request, $post);
-         
-         return redirect()->route('postList')
-         ->with('success', 'Post updated successfully.');
+        $updated = $this->postInterface->updatePost($request, $post);
+        if($updated == 1) {
+            return redirect()->route('postList')
+            ->with('success', 'Post updated successfully.');
+        } else {
+            return redirect()->route('postList')
+                ->with('error', 'Post not updated.');
+        }
     }
 
     /**
@@ -180,10 +176,15 @@ class PostController extends Controller
      */
     public function destroy(Post $post) 
     {
-        $this->postInterface->deletePost($post);
+        $deleted = $this->postInterface->deletePost($post);
+        if($deleted == 1) {
+            return redirect()->route('postList')
+                ->with('success','Post deleted successfully.!');
+        } else {
+            return redirect()->route('postList')
+                ->with('error','Post not deleted !');
+        }
 
-        return redirect()->route('postList')
-            ->with('success','Post deleted successfully.!');
     }
 
     /**

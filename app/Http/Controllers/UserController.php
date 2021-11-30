@@ -73,7 +73,6 @@ class UserController extends Controller
 
     public function confirm_registration(StoreUserRegistrationRequest $request)
     {
-        dd($request);
         $user = new User($request->all());
         if ($request->hasFile('profile')) {
             $filename = $request->profile->getClientOriginalName();
@@ -89,7 +88,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUserRegistrationRequest $request)
+    public function store(Request $request)
     {
         $user = new User($request->all());
         $createUser = $this->userInterface->storeUser($user);
@@ -161,10 +160,15 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->userInterface->deleteUser($user);
+        $deleted = $this->userInterface->deleteUser($user);
+        if($deleted == 1) {
+            return redirect()->route('showUsers')
+                ->with('success','User deleted successfully.!');
+        } else {
+            return redirect()->route('showUsers')
+                ->with('error','User not deleted !');
+        }
 
-        return redirect()->route('showUsers')
-            ->with('success','User deleted successfully.!');
     }
 
     /**

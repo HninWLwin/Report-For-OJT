@@ -91,6 +91,11 @@ class UserService implements UserServiceInterface
      */
     public function deleteUser($user)
     {
+        $user = [
+            'id' => $user['id'],
+            'deleted_at' => now(),
+            'deleted_user_id' => auth()->user()->id
+        ];
         $result = $this->userDao->deleteUser($user);
         
         return $result;

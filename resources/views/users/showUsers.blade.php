@@ -274,16 +274,17 @@ $.ajaxSetup({
             },
             // return the result
             success: function(result) {
-                $('#mediumBody').html("<img src =/uploads/images/" + user_profile + " style='width:150px;height:150px'><br>" + "Name  - " + user_name + "<br>" + 
-                                        "Type  - " + user_type + "<br>" + 
-                                        "Email  - " + user_email + "<br>" + 
-                                        "Phone  - " + user_phone + "<br>" + 
-                                        "Date of Birth  - " + user_dob + "<br>" + 
-                                        "Address  - " + user_address + "<br>" + 
-                                        "Created Date  - " + user_created_at + "<br>" + 
-                                        "Created User  - " + user_create_user_id + "<br>" + 
-                                        "Updated Date  - " + user_updated_at + "<br>" +
-                                        "Updated User  - " + user_updated_user_id ).show();
+                $('#mediumBody').html("<img src =/storage/images/" + user_profile + " style='width:150px;height:150px'><br><br>" + 
+                                        "Name  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;   " + user_name + "<br><br>" + 
+                                        "Type  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;  &nbsp; " + user_type + "<br><br>" + 
+                                        "Email  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;  &nbsp; " + user_email + "<br><br>" + 
+                                        "Phone  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;  &nbsp; " + user_phone + "<br><br>" + 
+                                        "Date of Birth  &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp; " + user_dob + "<br><br>" + 
+                                        "Address  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; " + user_address + "<br><br>" + 
+                                        "Created Date  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; " + user_created_at + "<br><br>" + 
+                                        "Created User  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; " + user_create_user_id + "<br><br>" + 
+                                        "Updated Date  &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp; " + user_updated_at + "<br><br>" +
+                                        "Updated User  &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;   " + user_updated_user_id ).show();
             
             },  
             complete: function() {

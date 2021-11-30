@@ -51,7 +51,6 @@ class UserDao implements UserDaoInterface
    */
   public function storeUser($user)
   {
-    //   dd($user);
       $result = User::create([
         'name' => $user['name'],
         'email' => $user['email'],
@@ -97,7 +96,7 @@ class UserDao implements UserDaoInterface
      */
     public function deleteUser($user)
     {
-        $result =  $user->delete();
+        $result =  User::where('id', $user['id'])->update($user);
         
         return $result;
     }

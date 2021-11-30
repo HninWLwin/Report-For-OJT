@@ -54,11 +54,7 @@ class PostService implements PostServiceInterface
     {
         $result = $this->postDao->storePost($request);
 
-        if ($result) {
-            return $result;
-        } else {
-            return false;
-        }
+        return $result;
     }
 
     /**
@@ -71,11 +67,7 @@ class PostService implements PostServiceInterface
     {
         $result = $this->postDao->updatePost($request, $post);
         
-        if ($result) {
-            return $result;
-        } else {
-            return false;
-        }
+        return $result;
     }
 
     /**
@@ -86,12 +78,13 @@ class PostService implements PostServiceInterface
      */
     public function deletePost($post)
     {
+        $post = [
+            'id' => $post['id'],
+            'deleted_at' => now(),
+            'deleted_user_id' => auth()->user()->id
+        ];
         $result = $this->postDao->deletePost($post);
         
-        if ($result) {
-            return $result;
-        } else {
-            return false;
-        }
+        return $result;
     }
 }

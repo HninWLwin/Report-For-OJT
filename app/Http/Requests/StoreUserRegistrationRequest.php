@@ -29,7 +29,7 @@ class StoreUserRegistrationRequest extends FormRequest
              'password' => ['required' , 'min:8'],
              'password_confirmation' => ['same:password'],
              'type' => ['required'],
-             'profile' => ['required', 'image', 'mimes:jpg,bmp,png,jpeg'],
+             'profile' => ['required', 'image', 'mimes:jpg,bmp,png,jpeg', 'max:1000'],
         ];
     }
 

@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
                 @if ($errors->any())
                 <div class="alert alert-danger">
-                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                    <strong>Error!</strong> There were some problems with your input.<br><br>
                     <ul>
                         @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -18,7 +18,7 @@
                 @endif
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('confirm_registration') }}" >
+                    <form method="POST" action="{{ route('confirm_registration') }}"  enctype="multipart/form-data">
                     @csrf
 
                         <div class="form-group row">
