@@ -15,13 +15,14 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 Route::group(['middleware' => 'prevent-back-history'],function(){
+    // Route::get('/postList', [App\Http\Controllers\PostController::class, 'index'])->name('postList');
+
     Route::get('/', function () {
-        return view('welcome');
+        return view('auth.login');
     });
     Route::get('/register', function () {
         return view('auth.register');
     });
-    
     Auth::routes();
     
     Route::resource('posts', PostController::class);
