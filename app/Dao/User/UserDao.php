@@ -5,9 +5,7 @@ namespace App\Dao\User;
 use App\Contracts\Dao\User\UserDaoInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use DB;
-use Illuminate\Support\Facades\Storage;
-use DateTime;
+use Illuminate\Support\Facades\DB;
 
 class UserDao implements UserDaoInterface
 {
@@ -29,6 +27,12 @@ class UserDao implements UserDaoInterface
     return $users;
   }
 
+  /**
+  * Search users
+  *
+  * @param name,email,start,end
+  * @return object user
+  */
   public function searchUserList($name, $email, $start, $end)
   {
     $user = User::where(function ($users) use ($name, $email, $start, $end) {
@@ -47,7 +51,8 @@ class UserDao implements UserDaoInterface
   /**
    * store user data to table
    * 
-   * @return object
+   * @param object user $user
+   * @return object user
    */
   public function storeUser($user)
   {
@@ -73,11 +78,11 @@ class UserDao implements UserDaoInterface
     });
   }
 
-  /**
-     * 
+   /**
      * Update user data to table
      *
-     * @return object
+     * @param object int $id
+     * @return object user
      */
     public function updateProfile($user)
     {
@@ -106,7 +111,8 @@ class UserDao implements UserDaoInterface
      * 
      * Delete user data from table
      *
-     * @return object
+     * @param object int $id
+     * @return object user
      */
     public function deleteUser($user)
     {
@@ -120,10 +126,11 @@ class UserDao implements UserDaoInterface
       });
     }
 
-     /**
-     * 
+    /**
      * Change password 
-     *
+     * 
+     * @param object int $id
+     * @return object user
      */
     public function updatePassword($request)
     {

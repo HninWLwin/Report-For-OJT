@@ -68,7 +68,7 @@
                                             data-updated_user_id="{{Auth::user()->name}}"> {{ $post->title }}</a></td>
                                             <td scope="col">{{ $post->description }}</td>
                                            
-                                            <td scope="col"> {{ $post->create_user_id }}</td>
+                                            <td scope="col"> {{ $post->user->name }}</td>
                                             <td scope="col">{{ $post->created_at->format('Y/m/d') }}</td>
                                             <td scope="col">
                                                 <form action="{{ route('posts.destroy',$post->id) }}" method="POST">

@@ -11,6 +11,7 @@ class PostService implements PostServiceInterface
 
   /**
    * Class Constructor
+   * 
    * @param PostDaoInterface $postDao
    * @return
    */

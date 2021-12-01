@@ -20,11 +20,7 @@ class User extends Authenticatable
         'updated_at',
         'dob'
     ];
-
-    public function posts(){
-        return $this->hasMany(Post::class);
-      }
-
+    
     /**
      * The attributes that are mass assignable.
      *

@@ -3,16 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\StoreUserRegistrationRequest;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use App\Contracts\Services\User\UserServiceInterface;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
-use Intervention\Image\Facades\Image;
 
 
 class UserController extends Controller
@@ -45,7 +40,8 @@ class UserController extends Controller
     /**
      * search user data.
      *
-     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function find(Request $request)
     {
@@ -159,7 +155,8 @@ class UserController extends Controller
     /**
      * Show the user's profile.
      *
-     * 
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      **/
     public function profile(User $user)
     {
@@ -178,6 +175,8 @@ class UserController extends Controller
     /**
      * Update user's password
      * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function update_password(ChangePasswordRequest $request)
     {

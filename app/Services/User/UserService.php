@@ -4,9 +4,7 @@ namespace App\Services\User;
 
 use App\Contracts\Dao\User\UserDaoInterface;
 use App\Contracts\Services\User\UserServiceInterface;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 use DateTime;
 
 class UserService implements UserServiceInterface

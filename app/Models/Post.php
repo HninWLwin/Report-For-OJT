@@ -15,12 +15,12 @@ class Post extends Model
     public $timestamps = true;
 
    /**
-     * Get the owner of the post
+     * Get the user that owns the post 
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function user()
     {
-      return $this->belongsTo(User::class);
+      return $this->belongsTo(User::class, 'create_user_id');
     }
 
     protected $fillable = [

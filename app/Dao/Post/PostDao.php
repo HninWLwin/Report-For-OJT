@@ -4,10 +4,7 @@ namespace App\Dao\Post;
 
 use App\Contracts\Dao\Post\PostDaoInterface;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use DateTime;
-
 class PostDao implements PostDaoInterface
 {
   /**
@@ -28,6 +25,11 @@ class PostDao implements PostDaoInterface
     return $posts;
   }
 
+  /**
+   * Search post
+   * @param Request $request
+   * @return object post
+   */
   public function getSearchData($request)
   {
     $posts = Post::where([
@@ -47,7 +49,8 @@ class PostDao implements PostDaoInterface
   /**
    * store post data to table
    * 
-   * @return object
+   * @param object post $post
+   * @return object post
    */
   public function storePost($post)
   {  
@@ -66,7 +69,8 @@ class PostDao implements PostDaoInterface
      * 
      * Update post data to table
      *
-     * @return object
+     * @param object int $id
+     * @return object post
      */
     public function updatePost($post)
     {
@@ -84,8 +88,8 @@ class PostDao implements PostDaoInterface
     /**
      * 
      * Delete post data from table
-     *
-     * @return object
+     * @param object int $id
+     * @return object post
      */
     public function deletePost($post)
     {

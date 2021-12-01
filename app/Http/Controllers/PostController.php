@@ -10,9 +10,7 @@ use App\Exports\PostsExport;
 use App\Imports\PostsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Contracts\Services\Post\PostServiceInterface;
-use DB;
-use App\Models\User;
-use Datetime;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -37,12 +35,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = $this->postInterface->getPostList();
-
-        // $username = DB::table('users')
+        // $posts = DB::table('users')
         // ->join('posts', 'users.id', '=', 'posts.create_user_id')
         // ->select('users.name')
         // ->get();
+        $posts = $this->postInterface->getPostList();
 
     
     //     foreach ($posts as $post){
@@ -149,7 +146,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\StorePostRequest  $request
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
@@ -187,6 +184,8 @@ class PostController extends Controller
     /**
      * Read uploaded file and store read data into DB
      * 
+     * @param  \Illuminate\Http\FileUploadRequest  $request
+     * @return \Illuminate\Http\Response
      */
     public function fileImport(FileUploadRequest $request)
     {
