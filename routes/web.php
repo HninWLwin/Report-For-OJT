@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 
 /*
@@ -34,7 +35,6 @@ Route::group(['middleware' => 'prevent-back-history'],function(){
     
     Route::get('file-import-export', [App\Http\Controllers\PostController::class, 'fileImportExport'])->name('import');
     Route::post('file-import', [App\Http\Controllers\PostController::class, 'fileImport'])->name('file-import');
-    Route::get('export', [App\Http\Controllers\PostController::class, 'export'])->name('export');
     
     
     Route::resource('users', UserController::class);
@@ -48,4 +48,5 @@ Route::group(['middleware' => 'prevent-back-history'],function(){
     Route::post('users/{user}/update_password','UserController@update_password')->name('update_password'); 
   });
 
+  Route::get('export', [App\Http\Controllers\PostController::class, 'export'])->name('export');
 

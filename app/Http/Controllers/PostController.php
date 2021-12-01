@@ -10,7 +10,6 @@ use App\Exports\PostsExport;
 use App\Imports\PostsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Contracts\Services\Post\PostServiceInterface;
-use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -35,32 +34,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        // $posts = DB::table('users')
-        // ->join('posts', 'users.id', '=', 'posts.create_user_id')
-        // ->select('users.name')
-        // ->get();
         $posts = $this->postInterface->getPostList();
 
-    
-    //     foreach ($posts as $post){
-   
-    //        $username = $post->user->name;
-    //        dd($username);
-   
-    //    }
-       
-
-        // foreach ($users as $user) {
-        // /* Here should get name to send with view but I get null
-        //  * if I try  $problem->user->name I get Trying to get property 'name' of non-object because user is null 
-        //  */
-        //     dd( $user->name); 
-        // }
-
-      //  dd($username);  
-
-        //return view('postList', compact('username'));
-        
         return view('postList', compact('posts'));
     }
 

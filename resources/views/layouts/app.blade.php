@@ -21,6 +21,20 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    
+    
 </head>
 <body>
     <div id="app">
@@ -36,18 +50,24 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                    
-                        <b><a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
-                            Bulletin_Board
-                        </a></b> &nbsp; &nbsp; &nbsp;
+                         <!-- Authentication Links -->
+                         @guest
 
-                        <a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
-                            Posts
-                        </a> &nbsp; &nbsp; &nbsp;
+                         @else
+                        <li>
+                            <b><a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
+                                Bulletin_Board
+                            </a></b> &nbsp; &nbsp; &nbsp;
 
-                        <a href="{{ route('showUsers') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
-                            Users
-                        </a> 
+                            <a href="{{ route('postList') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
+                                Posts
+                            </a> &nbsp; &nbsp; &nbsp;   
+
+                            <a href="{{ route('showUsers') }}" role="button"  aria-haspopup="true" aria-expanded="false" >
+                                Users
+                            </a> 
+                        </li>
+                        @endguest
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -87,8 +107,9 @@
 
         <main class="py-4">
             @yield('content')
-            @yield('javascript')
         </main>
+
     </div>
+    
 </body>
 </html>

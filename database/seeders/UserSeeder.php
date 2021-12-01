@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             'name' => 'AdminSCM',
             'email' => 'scmadmin@gmail.com',
             'password' => bcrypt('11111111'),
-            'type' => 1
+            'type' => 0
         ]);
     }
 }

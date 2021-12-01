@@ -25,9 +25,6 @@ class FileUploadRequest extends FormRequest
     {
         return [
             'file' => 'required|mimes:csv,txt',
-            'title'=> 'required',
-            'description' => 'required',
-            'status' => 'required'
         ];
     }
 
