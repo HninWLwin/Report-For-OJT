@@ -54,7 +54,7 @@
                 <div class="form-group row">
                     <label for="dob" class="col-sm-2 col-form-label">Date of Birth</label>
                     <div class="col-sm-6">
-                        <input type="date" name="dob" id="dob" class="form-control"  value="{{ $user->dob }}" autocomplete="off">
+                        <input type="text" name="dob" id="dob" class="form-control" placeholder="mm/dd/yyyy" value="{{ date('m/d/Y', strtotime($user->dob)) }}" autocomplete="off">
                     </div>
                 </div>
 

@@ -17,7 +17,7 @@
                                         @csrf
                                         <div class="row">
                                             <div class="searchItem">keyword</div>               
-                                            <div class="searchItem"><input type="text" name="term" class="form-control" placeholder=""></div>
+                                            <div class="searchItem"><input type="search" value="{{ request()->input('term') }}" name="term" class="form-control" placeholder=""></div>
                                             <a href="{{ route('search_post') }}" class=" mt-1">
                                             <div class="searchItem"><button type="submit" class="btn btn-primary">Search</button></div>
                                             </a>

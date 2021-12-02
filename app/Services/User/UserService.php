@@ -5,6 +5,7 @@ namespace App\Services\User;
 use App\Contracts\Dao\User\UserDaoInterface;
 use App\Contracts\Services\User\UserServiceInterface;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Carbon;
 use DateTime;
 
 class UserService implements UserServiceInterface
@@ -75,6 +76,10 @@ class UserService implements UserServiceInterface
     public function updateProfile($user)
     {
         $user->updated_user_id = auth()->user()->id;
+        $user->type = $user->type == 'Admin' ? 0 : 1;
+        $user->dob = Carbon::parse($user->dob);
+        $user->updated_user_id = auth()->user()->id;
+        $user->updated_at = now();
         
         $result = $this->userDao->updateProfile($user);
         

@@ -28,6 +28,7 @@ Route::group(['middleware' => 'prevent-back-history'],function(){
     });
     
     Route::resource('posts', PostController::class);
+    Route::get('/postList', [App\Http\Controllers\PostController::class, 'index'])->name('postList')->middleware('auth');
     Route::get('/search_post','PostController@find')->name('search_post');
     
     Route::post('posts/post_confirm_register','PostController@postConfirmRegistration')->name('confirm_register');

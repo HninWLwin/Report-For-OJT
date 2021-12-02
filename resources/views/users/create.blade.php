@@ -25,7 +25,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"  autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autofocus>
 
                                 @if ($errors->has('name'))
                                     <div class="invalid-feedback">
@@ -39,7 +39,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"  >
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" >
                                 
                                 @if ($errors->has('email'))
                                     <div class="invalid-feedback">
@@ -53,7 +53,7 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror  "  name="password" >
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror  "  name="password" value="{{ old('password') }}">
                                
                                 @if ($errors->has('password'))
                                     <div class="invalid-feedback">
@@ -68,7 +68,7 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Password Confirmation*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation"  >
+                                <input id="password-confirm" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="{{ old('password_confirmation') }}" >
 
                                 @if ($errors->has('password_confirmation'))
                                     <div class="invalid-feedback">
@@ -93,7 +93,7 @@
                             <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="phone" class="form-control " name="phone"  >
+                                <input id="phone" type="phone" class="form-control " name="phone" value="{{ old('phone') }}" >
                             </div>
                         </div>
 
@@ -101,7 +101,7 @@
                             <label for="dob" class="col-md-4 col-form-label text-md-right">{{ __('Date of birth') }}</label>
 
                             <div class="col-md-6">
-                                <input id="dob" type="date" class="form-control " name="dob"  >
+                                <input id="dob" type="date" class="form-control " name="dob"  value="{{ old('dob') }}">
                             </div>
                         </div>
 
@@ -109,7 +109,7 @@
                             <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="address" type="address" class="form-control " name="address" >
+                                <input id="address" type="address" class="form-control " name="address" value="{{ old('address') }}">
                             </div>
                         </div>
 
@@ -117,7 +117,7 @@
                             <label for="profile" class="col-md-4 col-form-label text-md-right">{{ __('Profile*') }}</label>
 
                             <div class="col-md-6">
-                                <input id="profile" type="file" class="form-control @error('profile') is-invalid @enderror" name="profile" accept="image/*" >
+                                <input id="profile" type="file" class="form-control @error('profile') is-invalid @enderror" name="profile" accept="image/*" value="{{ old('profile') }}">
                                 
                                 @if ($errors->has('profile'))
                                     <div class="invalid-feedback">
