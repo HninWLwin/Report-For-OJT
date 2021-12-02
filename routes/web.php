@@ -14,23 +14,24 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['middleware' => 'prevent-back-history'],function(){
-    // Route::get('/postList', [App\Http\Controllers\PostController::class, 'index'])->name('postList');
 
-    Route::get('/', function () {
-        return view('auth.login');
-    });
+Route::get('/', function () {
+    return view('auth.login');
+});
+Auth::routes();
+Route::get('/', [App\Http\Controllers\PostController::class, 'index'])->name('postList')->middleware('auth');
+
+Route::group(['middleware' => 'prevent-back-history'],function(){
+
     Route::get('/register', function () {
         return view('auth.register');
     });
-    Auth::routes();
     
     Route::resource('posts', PostController::class);
-    Route::get('/postList', [App\Http\Controllers\PostController::class, 'index'])->name('postList');
     Route::get('/search_post','PostController@find')->name('search_post');
     
     Route::post('posts/post_confirm_register','PostController@postConfirmRegistration')->name('confirm_register');
-    
+
     Route::post('posts/{post}','PostController@update_confirm')->name('update_confirm');
     Route::post('posts/{post}/update','PostController@update')->name('post.update');
     
