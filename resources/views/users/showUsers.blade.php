@@ -17,13 +17,13 @@
                                     @csrf
                                         <div class="row"> 
                                             <div class="searchItem">Name</div>   
-                                            <div class="searchItem col"><input type="text" name="name" class="form-control" placeholder=""></div>
+                                            <div class="searchItem col"><input type="text" name="name" class="form-control" placeholder="" value="{{ request()->input('name') }}" ></div>
                                             <div class="searchItem">Email</div>   
-                                            <div class="searchItem col"><input type="email" name="email" class="form-control" placeholder=""></div>
+                                            <div class="searchItem col"><input type="email" name="email" class="form-control" placeholder="" value="{{ request()->input('email') }}" ></div>
                                             <div class="searchItem">From</div>   
-                                            <div class="searchItem col"><input type="text" name="start" class="form-control " placeholder=""></div>
+                                            <div class="searchItem col"><input type="text" name="start" class="form-control " placeholder="" value="{{ request()->input('start') }}" ></div>
                                             <div class="searchItem">To</div>   
-                                            <div class="searchItem col"><input type="text" name="end" class="form-control " placeholder=""></div>
+                                            <div class="searchItem col"><input type="text" name="end" class="form-control " placeholder="" value="{{ request()->input('end') }}" ></div>
                                             <div class="searchItem"><button type="submit" class="btn btn-primary">Search</button></div>
                                            
                                         </div>
